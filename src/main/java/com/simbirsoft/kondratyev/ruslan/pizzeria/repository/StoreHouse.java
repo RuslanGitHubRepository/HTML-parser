@@ -1,7 +1,5 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.models;
 
-import com.simbirsoft.kondratyev.ruslan.pizzeria.Ingredient;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.Pair;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.enums.Wrongs;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.views.Dialog;
 
