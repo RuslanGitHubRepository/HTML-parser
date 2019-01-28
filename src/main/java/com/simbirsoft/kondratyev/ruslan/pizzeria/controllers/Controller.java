@@ -1,17 +1,17 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.controllers;
 
-import com.simbirsoft.kondratyev.ruslan.pizzeria.Ingredient;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.Pair;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.enums.Wrongs;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Kitchen;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.models.StoreHouse;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pair;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.service.Kitchen;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.repository.StoreHouse;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.views.Dialog;
 
 import java.util.*;
 
-import static com.simbirsoft.kondratyev.ruslan.pizzeria.enums.Suggest.INGREDIENT;
-import static com.simbirsoft.kondratyev.ruslan.pizzeria.enums.Suggest.SIZE;
-import static com.simbirsoft.kondratyev.ruslan.pizzeria.enums.Wrongs.*;
+import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Suggest.INGREDIENT;
+import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Suggest.SIZE;
+import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.*;
 
 public class Controller {
     public Controller(final StoreHouse storeHouse, final Dialog dialog, final Kitchen kitchen){

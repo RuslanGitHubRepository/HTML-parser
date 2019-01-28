@@ -1,7 +1,9 @@
-package com.simbirsoft.kondratyev.ruslan.pizzeria.models;
+package com.simbirsoft.kondratyev.ruslan.pizzeria.service;
 
-import static com.simbirsoft.kondratyev.ruslan.pizzeria.enums.Wrongs.*;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.enums.Wrongs;
+import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.*;
+
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.views.Dialog;
 
 import java.util.*;

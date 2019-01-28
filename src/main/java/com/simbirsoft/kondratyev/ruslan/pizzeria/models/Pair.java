@@ -1,4 +1,4 @@
-package com.simbirsoft.kondratyev.ruslan.pizzeria;
+package com.simbirsoft.kondratyev.ruslan.pizzeria.models;
 
 public class Pair<A, B> {
     private A first;

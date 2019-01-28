@@ -1,4 +1,4 @@
-package com.simbirsoft.kondratyev.ruslan.pizzeria.enums;
+package com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums;
 
 public enum Wrongs {
     WRONG_INPUT,

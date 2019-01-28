@@ -1,8 +1,8 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria;
 
 import com.simbirsoft.kondratyev.ruslan.pizzeria.controllers.Controller;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Kitchen;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.models.StoreHouse;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.service.Kitchen;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.repository.StoreHouse;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.views.Dialog;
 
 import java.util.ArrayList;

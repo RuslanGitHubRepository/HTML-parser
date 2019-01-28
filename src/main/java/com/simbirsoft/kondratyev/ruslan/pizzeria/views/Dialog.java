@@ -1,15 +1,16 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.views;
 
-import com.simbirsoft.kondratyev.ruslan.pizzeria.*;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.enums.*;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Kitchen;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.*;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.service.Kitchen;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pair;
 
 import java.util.Collection;
 import java.util.Scanner;
 import java.lang.NumberFormatException;
 
-import static com.simbirsoft.kondratyev.ruslan.pizzeria.enums.Suggest.SIZE;
-import static com.simbirsoft.kondratyev.ruslan.pizzeria.enums.Wrongs.WRONG_INPUT;
+import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Suggest.SIZE;
+import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.WRONG_INPUT;
 
 public class Dialog {
     public Dialog(){
