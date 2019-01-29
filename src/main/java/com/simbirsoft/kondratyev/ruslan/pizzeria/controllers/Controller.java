@@ -46,27 +46,17 @@ public class Controller {
                     while (true) {
                         countIngredientUser = dialog.suggest(INGREDIENT, new Pair<>(ingredient, countIngredientStore));
                         globalWrongs = storeHouse.getIngredient(ingredient,countIngredientUser);
-                        if (globalWrongs == WRONG_NONE) {
+                        if (globalWrongs == WRONG_NONE){
                             globalWrongs = kitchen.addToPecipe(ingredient, countIngredientUser);
                         }
-                        if (globalWrongs == WRONG_WASHOUT) {
-                            break;
-                        }
-                        else if (globalWrongs == WRONG_INPUT) {
+                        if (globalWrongs == WRONG_INPUT || globalWrongs == WRONG_FORMATION) {
                             dialog.wrongMessage(globalWrongs);
                         }
-                        else if (globalWrongs == WRONG_FORMATION) {
-                            dialog.wrongMessage(WRONG_FORMATION);
-                        }
-                        else {
+                        if (globalWrongs == WRONG_NONE || globalWrongs == WRONG_WASHOUT){
                             break;
                         }
                     }
-                    if (globalWrongs == WRONG_WASHOUT) {
-                        break;
-                    }
-
-                    if (Kitchen.readinessFlag) {
+                    if (globalWrongs == WRONG_WASHOUT || Kitchen.readinessFlag) {
                         break;
                     }
                 }
