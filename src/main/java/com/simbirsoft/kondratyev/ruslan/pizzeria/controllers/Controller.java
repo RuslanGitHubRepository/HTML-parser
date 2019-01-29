@@ -19,6 +19,42 @@ public class Controller {
     private Kitchen kitchen;
     private Wrongs globalWrongs;
 
+    private void getSizePizza() {
+        dialog.wish();
+        globalWrongs = kitchen.setSizePizza(dialog.suggest(SIZE, null));
+    }
+    private void creatRecipe(final Collection<Ingredient> ingredients) {
+        Integer countIngredientStore = 0;
+        Integer countIngredientUser = 0;
+
+        for (Ingredient ingredient : ingredients) {
+            countIngredientStore = storeHouse.getQuantity(ingredient);
+            if (countIngredientStore == 0) {
+                continue;
+            }
+            while (true) {
+                countIngredientUser = dialog.suggest(INGREDIENT, new Pair<>(ingredient, countIngredientStore));
+
+                globalWrongs = kitchen.addToPecipe(ingredient, countIngredientUser);
+
+                if (globalWrongs == WRONG_NONE){
+                    globalWrongs = storeHouse.getIngredient(ingredient,countIngredientUser);
+                }
+
+                if (globalWrongs == WRONG_INPUT || globalWrongs == WRONG_FORMATION) {
+                    dialog.wrongMessage(globalWrongs);
+                }
+
+                if (globalWrongs == WRONG_NONE || globalWrongs == WRONG_WASHOUT){
+                    break;
+                }
+            }
+            if (globalWrongs == WRONG_WASHOUT || Kitchen.readinessFlag) {
+                break;
+            }
+        }
+    }
+
     public Controller(final StoreHouse storeHouse, final Dialog dialog, final Kitchen kitchen){
         this.storeHouse = storeHouse;
         this.dialog = dialog;
@@ -26,45 +62,28 @@ public class Controller {
     }
     public void exec(){
         boolean status = dialog.welcome();
-        Integer countIngredientStore = 0;
-        Integer countIngredientUser = 0;
+
         Collection<Ingredient> ingredients = storeHouse.getAllIngredients();
 
         while (status) {
             kitchen.restartKitchen();
+            storeHouse.commitStore();
             while (!Kitchen.readinessFlag) {
-                dialog.wish();
-                globalWrongs = kitchen.setSizePizza(dialog.suggest(SIZE, null));
+                getSizePizza();
+
                 if (globalWrongs == WRONG_WASHOUT){
                     break;
                 }
-                for (Ingredient ingredient : ingredients) {
-                    countIngredientStore = storeHouse.getQuantity(ingredient);
-                    if (countIngredientStore == 0) {
-                        continue;
-                    }
-                    while (true) {
-                        countIngredientUser = dialog.suggest(INGREDIENT, new Pair<>(ingredient, countIngredientStore));
-                        globalWrongs = storeHouse.getIngredient(ingredient,countIngredientUser);
-                        if (globalWrongs == WRONG_NONE){
-                            globalWrongs = kitchen.addToPecipe(ingredient, countIngredientUser);
-                        }
-                        if (globalWrongs == WRONG_INPUT || globalWrongs == WRONG_FORMATION) {
-                            dialog.wrongMessage(globalWrongs);
-                        }
-                        if (globalWrongs == WRONG_NONE || globalWrongs == WRONG_WASHOUT){
-                            break;
-                        }
-                    }
-                    if (globalWrongs == WRONG_WASHOUT || Kitchen.readinessFlag) {
-                        break;
-                    }
-                }
+
+                creatRecipe(ingredients);
+
                 if (globalWrongs == WRONG_WASHOUT) {
                     storeHouse.restoreStore();
                     break;
                 }
+
                 dialog.orderFormed();
+
                 try {
                     dialog.issueResult(kitchen.getPizza());
                 } catch(Exception err) {

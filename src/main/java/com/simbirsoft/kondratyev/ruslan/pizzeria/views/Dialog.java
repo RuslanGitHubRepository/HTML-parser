@@ -59,7 +59,7 @@ public class Dialog {
         }
         return answer.toUpperCase().matches("Y");
     }
-    public boolean issueResult(Collection<String> pizzaDescription) throws Exception {
+    public void issueResult(Collection<String> pizzaDescription) throws Exception {
         for(int i = 0; i < 10; i++) {
             try {
                 System.out.print(". ");
@@ -74,7 +74,6 @@ public class Dialog {
             System.out.println(data);
         }
         System.out.println("Приятного аппетита");
-        return false;
     }
     public boolean repeat(){
         boolean result;

@@ -54,6 +54,11 @@ public class StoreHouse {
             }
         }
     }
+    public void commitStore() {
+        for (Map.Entry<String,Stack<Ingredient>> pair : historyStorage.entrySet()){
+            pair.getValue().clear();
+        }
+    }
 
     public Collection<Ingredient> getAllIngredients() {
         List<Ingredient> ingredients = new ArrayList<>();
