@@ -9,20 +9,20 @@ import com.simbirsoft.kondratyev.ruslan.pizzeria.views.Dialog;
 import java.util.*;
 
 public class Kitchen {
-    public static Integer maxPortionIngredient = 0;
-    public static boolean readinessFlag = false;
-    public static Integer maxPortionPizza = 0;
-
     private Map<Ingredient,Integer> recipe = new HashMap<>();
     private Integer sizePizza = 0;
     private Integer currentPortion = 0;
 
-    public Kitchen(Integer maxPortionIngredient,Integer maxPortionPizza){
+    public static Integer maxPortionIngredient = 0;
+    public static boolean readinessFlag = false;
+    public static Integer maxPortionPizza = 0;
+
+    public Kitchen(Integer maxPortionIngredient,Integer maxPortionPizza) {
         this.maxPortionIngredient = maxPortionIngredient;
         this.maxPortionPizza = maxPortionPizza;
     }
 
-    public Wrongs addToPecipe(Ingredient ingredient, Integer countToAdd, Integer totalCount){
+    public Wrongs addToPecipe(Ingredient ingredient, Integer countToAdd) {
         if (countToAdd == Dialog.ABORT){
             return WRONG_WASHOUT;
         }
@@ -37,12 +37,12 @@ public class Kitchen {
         }
         recipe.put(ingredient,countToAdd);
         currentPortion += countToAdd;
-        if (currentPortion == maxPortionPizza){
+        if (currentPortion.equals(maxPortionPizza)){
             readinessFlag = true;
         }
         return WRONG_NONE;
     }
-    public void restartKitchen(){
+    public void restartKitchen() {
         sizePizza = 0;
         currentPortion = 0;
         readinessFlag = false;
@@ -55,7 +55,7 @@ public class Kitchen {
         this.sizePizza = sizePizza;
         return WRONG_NONE;
     }
-    public Collection<String> getPizza(){
+    public Collection<String> getPizza() {
         List<String> pizza = new ArrayList<>();
         pizza.add("Размер пиццы: " + sizePizza);
         for (Map.Entry pair:recipe.entrySet()) {

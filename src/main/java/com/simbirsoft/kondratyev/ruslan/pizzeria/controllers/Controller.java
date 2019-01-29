@@ -30,9 +30,9 @@ public class Controller {
         Integer countIngredientUser = 0;
         Collection<Ingredient> ingredients = storeHouse.getAllIngredients();
 
-        while(status) {
+        while (status) {
             kitchen.restartKitchen();
-            while(!Kitchen.readinessFlag) {
+            while (!Kitchen.readinessFlag) {
                 dialog.wish();
                 globalWrongs = kitchen.setSizePizza(dialog.suggest(SIZE, null));
                 if (globalWrongs == WRONG_WASHOUT){
@@ -40,42 +40,46 @@ public class Controller {
                 }
                 for (Ingredient ingredient : ingredients) {
                     countIngredientStore = storeHouse.getQuantity(ingredient);
-                    if (countIngredientStore == 0){
+                    if (countIngredientStore == 0) {
                         continue;
                     }
                     while (true) {
                         countIngredientUser = dialog.suggest(INGREDIENT, new Pair<>(ingredient, countIngredientStore));
                         globalWrongs = storeHouse.getIngredient(ingredient,countIngredientUser);
                         if (globalWrongs == WRONG_NONE) {
-                            globalWrongs = kitchen.addToPecipe(ingredient, countIngredientUser, countIngredientStore);
+                            globalWrongs = kitchen.addToPecipe(ingredient, countIngredientUser);
                         }
-                        if (globalWrongs == WRONG_WASHOUT){
+                        if (globalWrongs == WRONG_WASHOUT) {
                             break;
                         }
-                        else if (globalWrongs == WRONG_INPUT){
+                        else if (globalWrongs == WRONG_INPUT) {
                             dialog.wrongMessage(globalWrongs);
                         }
-                        else if (globalWrongs == WRONG_FORMATION){
+                        else if (globalWrongs == WRONG_FORMATION) {
                             dialog.wrongMessage(WRONG_FORMATION);
                         }
                         else {
                             break;
                         }
                     }
-                    if (globalWrongs == WRONG_WASHOUT){
+                    if (globalWrongs == WRONG_WASHOUT) {
                         break;
                     }
 
-                    if (Kitchen.readinessFlag){
+                    if (Kitchen.readinessFlag) {
                         break;
                     }
                 }
-                if (globalWrongs == WRONG_WASHOUT){
+                if (globalWrongs == WRONG_WASHOUT) {
                     storeHouse.restoreStore();
                     break;
                 }
                 dialog.orderFormed();
-                dialog.issueResult(kitchen.getPizza());
+                try {
+                    dialog.issueResult(kitchen.getPizza());
+                } catch(Exception err) {
+                    System.out.println(err.getMessage());
+                }
             }
             status = dialog.repeat();
         }
