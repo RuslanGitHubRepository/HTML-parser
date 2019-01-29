@@ -16,8 +16,8 @@ public class Main {
         Dialog dialog = new Dialog();
         Kitchen kitchen = new Kitchen(2,10);
         StoreHouse storeHouse = new StoreHouse(
-                new ArrayList<String>(Arrays.asList(names)),
-                new ArrayList<Integer>(Arrays.asList(counts))
+                new ArrayList<>(Arrays.asList(names)),
+                new ArrayList<>(Arrays.asList(counts))
         );
         Controller controller = new Controller(storeHouse,dialog,kitchen);
         controller.exec();

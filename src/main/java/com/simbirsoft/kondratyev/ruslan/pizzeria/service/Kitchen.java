@@ -2,20 +2,20 @@ package com.simbirsoft.kondratyev.ruslan.pizzeria.service;
 
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.*;
 
+import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.Kitchens;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.views.Dialog;
 
 import java.util.*;
 
-public class Kitchen {
+public class Kitchen implements Kitchens<Ingredient> {
     private Map<Ingredient,Integer> recipe = new HashMap<>();
     private Integer sizePizza = 0;
     private Integer currentPortion = 0;
-
+    public static Integer maxPortionPizza = 0;
     public static Integer maxPortionIngredient = 0;
     public static boolean readinessFlag = false;
-    public static Integer maxPortionPizza = 0;
 
     public Kitchen(Integer maxPortionIngredient,Integer maxPortionPizza) {
         this.maxPortionIngredient = maxPortionIngredient;
@@ -58,8 +58,8 @@ public class Kitchen {
     public Collection<String> getPizza() {
         List<String> pizza = new ArrayList<>();
         pizza.add("Размер пиццы: " + sizePizza);
-        for (Map.Entry pair:recipe.entrySet()) {
-            pizza.add(pair.getKey() + "->" + pair.getValue() + " пр.");
+        for (Map.Entry<Ingredient,Integer> pair:recipe.entrySet()) {
+            pizza.add(pair.getKey().getName() + "->" + pair.getValue() + " пр.");
         }
         readinessFlag = true;
         return pizza;

@@ -1,5 +1,6 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.repository;
 
+import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.Store;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.views.Dialog;
@@ -9,7 +10,7 @@ import java.util.*;
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.*;
 
 
-public class StoreHouse {
+public class StoreHouse implements Store<Ingredient> {
     private final Map<String, Stack<Ingredient>> storage = new HashMap<>();
     private final Map<String, Stack<Ingredient>> historyStorage = new HashMap<>();
 
@@ -70,14 +71,5 @@ public class StoreHouse {
 
     public Integer getQuantity(final Ingredient type) {
         return storage.containsKey(type.getName()) ? storage.get(type.getName()).size() : 0;
-    }
-
-    public String toString() {
-        String identification = new String();
-        for (Map.Entry<String, Stack<Ingredient>> entry : storage.entrySet()) {
-            identification += entry.getKey().toString();
-            identification += "(" + entry.getValue().size() + "), ";
-        }
-        return identification;
     }
 }

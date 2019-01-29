@@ -1,10 +1,12 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.controllers;
 
+import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.Controllers;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.Kitchens;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.Store;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pair;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.service.Kitchen;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.repository.StoreHouse;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.views.Dialog;
 
 import java.util.*;
@@ -13,10 +15,10 @@ import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Suggest.ING
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Suggest.SIZE;
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.*;
 
-public class Controller {
-    private StoreHouse storeHouse;
+public class Controller implements Controllers<Ingredient> {
+    private Store<Ingredient> storeHouse;
     private Dialog dialog;
-    private Kitchen kitchen;
+    private Kitchens<Ingredient> kitchen;
     private Wrongs globalWrongs;
 
     private void getSizePizza() {
@@ -55,7 +57,7 @@ public class Controller {
         }
     }
 
-    public Controller(final StoreHouse storeHouse, final Dialog dialog, final Kitchen kitchen){
+    public Controller(final Store<Ingredient> storeHouse, final Dialog dialog, final Kitchens<Ingredient> kitchen){
         this.storeHouse = storeHouse;
         this.dialog = dialog;
         this.kitchen = kitchen;
