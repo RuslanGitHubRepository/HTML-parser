@@ -9,20 +9,20 @@ import com.simbirsoft.kondratyev.ruslan.pizzeria.views.Dialog;
 
 import java.util.*;
 
-public class Kitchen implements Kitchens<Ingredient> {
+public class Kitchen extends Kitchens<Ingredient> {
     private Map<Ingredient,Integer> recipe = new HashMap<>();
     private Integer sizePizza = 0;
     private Integer currentPortion = 0;
-    public static Integer maxPortionPizza = 0;
-    public static Integer maxPortionIngredient = 0;
+    private Integer typeOfPizza = 0;
+
     public static boolean readinessFlag = false;
 
-    public Kitchen(Integer maxPortionIngredient,Integer maxPortionPizza) {
-        this.maxPortionIngredient = maxPortionIngredient;
-        this.maxPortionPizza = maxPortionPizza;
+    public Kitchen(Integer maxIngredient,Integer maxPizza) {
+        maxPortionIngredient = maxIngredient;
+        maxPortionPizza = maxPizza;
     }
 
-    public Wrongs addToPecipe(Ingredient ingredient, Integer countToAdd) {
+    public Wrongs addToRecipe(Ingredient ingredient, Integer countToAdd) {
         if (countToAdd == Dialog.ABORT){
             return WRONG_WASHOUT;
         }
@@ -62,6 +62,7 @@ public class Kitchen implements Kitchens<Ingredient> {
             pizza.add(pair.getKey().getName() + "->" + pair.getValue() + " пр.");
         }
         readinessFlag = true;
+        typeOfPizza++;
         return pizza;
     }
 }

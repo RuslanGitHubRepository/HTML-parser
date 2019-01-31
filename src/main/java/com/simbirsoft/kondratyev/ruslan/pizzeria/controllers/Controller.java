@@ -7,6 +7,7 @@ import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pair;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.service.Kitchen;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.service.Kitchen_DB;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.views.Dialog;
 
 import java.util.*;
@@ -25,7 +26,7 @@ public class Controller implements Controllers<Ingredient> {
         dialog.wish();
         globalWrongs = kitchen.setSizePizza(dialog.suggest(SIZE, null));
     }
-    private void creatRecipe(final Collection<Ingredient> ingredients) {
+    private void creatRecipe(final Collection<Ingredient> ingredients) throws Exception{
         Integer countIngredientStore = 0;
         Integer countIngredientUser = 0;
 
@@ -37,10 +38,10 @@ public class Controller implements Controllers<Ingredient> {
             while (true) {
                 countIngredientUser = dialog.suggest(INGREDIENT, new Pair<>(ingredient, countIngredientStore));
 
-                globalWrongs = kitchen.addToPecipe(ingredient, countIngredientUser);
+                globalWrongs = kitchen.addToRecipe(ingredient, countIngredientUser);
 
                 if (globalWrongs == WRONG_NONE){
-                    globalWrongs = storeHouse.getIngredient(ingredient,countIngredientUser);
+                  globalWrongs = storeHouse.getIngredient(ingredient, countIngredientUser);
                 }
 
                 if (globalWrongs == WRONG_INPUT || globalWrongs == WRONG_FORMATION) {
@@ -51,7 +52,7 @@ public class Controller implements Controllers<Ingredient> {
                     break;
                 }
             }
-            if (globalWrongs == WRONG_WASHOUT || Kitchen.readinessFlag) {
+            if (globalWrongs == WRONG_WASHOUT || Kitchens.readinessFlag) {
                 break;
             }
         }
@@ -62,7 +63,7 @@ public class Controller implements Controllers<Ingredient> {
         this.dialog = dialog;
         this.kitchen = kitchen;
     }
-    public void exec(){
+    public void exec() throws Exception{
         boolean status = dialog.welcome();
 
         Collection<Ingredient> ingredients = storeHouse.getAllIngredients();
@@ -70,13 +71,12 @@ public class Controller implements Controllers<Ingredient> {
         while (status) {
             kitchen.restartKitchen();
             storeHouse.commitStore();
-            while (!Kitchen.readinessFlag) {
+            while (!Kitchen_DB.readinessFlag) {
                 getSizePizza();
 
                 if (globalWrongs == WRONG_WASHOUT){
                     break;
                 }
-
                 creatRecipe(ingredients);
 
                 if (globalWrongs == WRONG_WASHOUT) {
@@ -85,12 +85,8 @@ public class Controller implements Controllers<Ingredient> {
                 }
 
                 dialog.orderFormed();
+                dialog.issueResult(kitchen.getPizza());
 
-                try {
-                    dialog.issueResult(kitchen.getPizza());
-                } catch(Exception err) {
-                    System.out.println(err.getMessage());
-                }
             }
             status = dialog.repeat();
         }

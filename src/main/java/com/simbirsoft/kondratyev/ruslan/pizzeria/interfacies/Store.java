@@ -6,9 +6,9 @@ import java.util.Collection;
 
 
 public interface Store<Ingredient>{
-    Wrongs getIngredient(final Ingredient type, final Integer quantity);
-    void restoreStore();
+    Wrongs getIngredient(final Ingredient type, final Integer quantity) throws Exception;
+    void restoreStore()throws Exception;
     void commitStore();
-    Collection<Ingredient> getAllIngredients();
-    Integer getQuantity(final Ingredient type);
+    Collection<Ingredient> getAllIngredients() throws Exception;
+    Integer getQuantity(final Ingredient type) throws Exception ;
 }
