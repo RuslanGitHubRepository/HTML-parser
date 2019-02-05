@@ -1,29 +1,55 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.repository;
 
 import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.Store;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Connection2BD;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.MakerException;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.propertySingltone;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.views.Dialog;
 
+import java.sql.*;
 import java.util.*;
+import java.io.InputStream;
 
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.*;
 
-
 public class StoreHouse implements Store<Ingredient> {
-    private final Map<String, Stack<Ingredient>> storage = new HashMap<>();
-    private final Map<String, Stack<Ingredient>> historyStorage = new HashMap<>();
+    private final Connection2BD connectBD;
 
-    public StoreHouse(final Collection<String> types, final Collection<Integer> quantity) {
-        Iterator<Integer> quantityIter = quantity.iterator();
-        for (String type : types) {
-            storage.put(type, new Stack<>());
-            historyStorage.put(type, new Stack<>());
-            Integer g = quantityIter.next();
-            for (int i = 0; i < g; i++) {
-                storage.get(type).push(new Ingredient(type));
+    private void creatDataBase(final Collection<String> types, final Collection<Integer> quantity) {
+
+        try {
+            Connection connect = connectBD.getConnect(false);
+            Statement statement = connect.createStatement();
+            statement.addBatch("DROP TABLE IF EXISTS Ingredients");
+            statement.addBatch("CREATE TABLE IF NOT EXISTS Ingredients (id MEDIUMINT NOT NULL AUTO_INCREMENT, typeof VARCHAR(30) NOT NULL, storeCount MEDIUMINT, PRIMARY KEY (id));");
+            PreparedStatement statementPrep = connect.prepareStatement("INSERT INTO Ingredients(typeof, storeCount) VALUES (?, ?)");
+            Iterator<Integer> quantityIter = quantity.iterator();
+            for (String type : types) {
+                statementPrep.setString(1, type);
+                statementPrep.setInt(2, quantityIter.next());
+                statementPrep.addBatch();
             }
+            if (statement.executeBatch().length == 2 && statementPrep.executeBatch().length == types.size()) {
+                connectBD.commitRollBack("commit");
+            } else {
+                connectBD.commitRollBack("rollback");
+            }
+            connectBD.closeDB();
+        } catch (SQLException err) {
+            throw new MakerException("SH.creatDataBase(): " + err.getSQLState(), err.getCause());
         }
+    }
+
+    public StoreHouse(final Collection<String> types, final Collection<Integer> quantity){
+        try {
+            connectBD = new Connection2BD();
+        }
+        catch (ClassNotFoundException err) {
+            throw new MakerException("StoreHouseConstructer(): " + err.getMessage(), err.getCause());
+        }
+        creatDataBase(types, quantity);
     }
 
     public Wrongs getIngredient(final Ingredient type, final Integer quantity) {
@@ -33,43 +59,66 @@ public class StoreHouse implements Store<Ingredient> {
         if (quantity == Dialog.ABORT) {
             return WRONG_WASHOUT;
         }
-        if (storage.containsKey(type.getName())) {
-            Stack<Ingredient> stack = storage.get(type.getName());
-            Stack<Ingredient> historyStack = historyStorage.get(type.getName());
-            if (!stack.empty() && stack.size() >= quantity) {
-                for (int i = quantity; i > 0 ;i--) {
-                    historyStack.push(stack.pop());
-                }
-                return WRONG_NONE;
-            }
+        Integer countIngredientDB = getQuantity(type);
+        if ((countIngredientDB < quantity) || (countIngredientDB == 0)) {
+            return WRONG_INPUT;
         }
-        return WRONG_INPUT;
+        return WRONG_NONE;
     }
 
-    public void restoreStore() {
-        for (Map.Entry<String,Stack<Ingredient>> pair : historyStorage.entrySet()) {
-            Stack<Ingredient> stack = storage.get(pair.getKey());
-            final Integer historyStorageStackSize = pair.getValue().size();
-            for (int i = 0; i < historyStorageStackSize; i++) {
-                stack.push(pair.getValue().pop());
-            }
-        }
-    }
-    public void commitStore() {
-        for (Map.Entry<String,Stack<Ingredient>> pair : historyStorage.entrySet()){
-            pair.getValue().clear();
+    public Integer getQuantity(final Ingredient type){
+        try {
+            Connection connect = connectBD.getConnect(true);
+            PreparedStatement statementPrep = connect.prepareStatement("SELECT storeCount FROM Ingredients WHERE typeof = ?");
+            statementPrep.setString(1,type.getName());
+            ResultSet requestResult = statementPrep.executeQuery();
+            requestResult.next();
+            Integer count = requestResult.getInt("storeCount");
+            connectBD.closeDB();
+            return count;
+        } catch (SQLException err) {
+            throw new MakerException("SH.getQuantity(): " + err.getMessage(), err.getCause());
         }
     }
 
     public Collection<Ingredient> getAllIngredients() {
-        List<Ingredient> ingredients = new ArrayList<>();
-        for (Map.Entry<String,Stack<Ingredient>> pair : storage.entrySet()) {
-            ingredients.add(pair.getValue().peek());
+        Collection<Ingredient> listIndredients = new LinkedList<>();
+        try {
+            Connection connect = connectBD.getConnect(true);
+            Statement statementDB = connect.createStatement();
+            ResultSet requestResult = statementDB.executeQuery("SELECT typeof FROM Ingredients;");
+            while (requestResult.next()) {
+                ((LinkedList<Ingredient>) listIndredients).addLast(new Ingredient(requestResult.getString("typeof")));
+            }
+            connectBD.closeDB();
+            return listIndredients;
+        } catch (SQLException err) {
+            throw new MakerException("SH.getAllIngredients(): " + err.getMessage(), err.getCause());
         }
-        return ingredients;
     }
 
-    public Integer getQuantity(final Ingredient type) {
-        return storage.containsKey(type.getName()) ? storage.get(type.getName()).size() : 0;
+    public void commitStore(Map<Ingredient,Integer> ingrediens) {
+        if(ingrediens.size() == 0){
+            return;
+        }
+        Integer countIngredient;
+        try{
+            Connection connect = connectBD.getConnect(false);
+            PreparedStatement statementPrep = connect.prepareStatement("UPDATE Ingredients SET storeCount = ? WHERE typeof = ?");
+            for (Map.Entry<Ingredient,Integer> type : ingrediens.entrySet()) {
+                countIngredient = getQuantity(type.getKey());
+                statementPrep.setInt(1, countIngredient - type.getValue());
+                statementPrep.setString(2, type.getKey().getName());
+                statementPrep.addBatch();
+            }
+            if (statementPrep.executeBatch().length == ingrediens.size()) {
+                connectBD.commitRollBack("commit");
+            } else {
+                connectBD.commitRollBack("rollback");
+            }
+            connectBD.closeDB();
+        } catch (SQLException err) {
+            throw new MakerException("SH.commitStore(): " + err.getSQLState(), err.getCause());
+        }
     }
 }

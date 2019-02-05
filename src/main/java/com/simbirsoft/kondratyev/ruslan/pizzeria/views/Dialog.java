@@ -4,7 +4,7 @@ import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.Kitchens;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.*;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pair;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.service.Kitchen_DB;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.service.Kitchen;
 
 import java.util.Collection;
 import java.util.Scanner;
@@ -18,13 +18,13 @@ public class Dialog{
     public static final Integer ABORT = 0xFF;
 
     public void wish() {
-        System.out.print("Пожалуйста, отметьте необходимые пункты меню (от 4 до 7 ингридиентов, но не более" + Kitchens.maxPortionPizza + " порций на пиццу), (N) отмена заказа...\n");
+        System.out.print("Пожалуйста, отметьте необходимые пункты меню (от 4 до 7 ингридиентов, но не более" + Kitchen.maxPortionPizza + " порций на пиццу), (N) отмена заказа...\n");
     }
     public Integer suggest(Suggest suggest, Pair<Ingredient,Integer> pair) {
         if (suggest == SIZE) {
             System.out.print("укажите размер пиццы: 25, 35 либо 45 см (введите цифры), отмена (N): ");
         }else if (pair != null) {
-            System.out.print(pair.getFirst().getName() + "(" + pair.getSecond() + " на складе " + ", "+ Kitchens.maxPortionIngredient + " на порции): ");
+            System.out.print(pair.getFirst().getName() + "(" + pair.getSecond() + " на складе " + ", "+ Kitchen.maxPortionIngredient + " на порции): ");
         }
         String answer = scanner.nextLine();
         while(true) {
@@ -60,14 +60,14 @@ public class Dialog{
         }
         return answer.toUpperCase().matches("Y");
     }
-    public void issueResult(Collection<String> pizzaDescription) throws Exception {
+    public void issueResult(Collection<String> pizzaDescription){
         for(int i = 0; i < 10; i++) {
             try {
                 System.out.print(". ");
                 Thread.sleep(500);
             }
             catch(InterruptedException err) {
-                throw err;
+                throw new RuntimeException(err.getMessage(), err.getCause());
             }
         }
         System.out.println("\nВаша пицца готова:");
