@@ -1,4 +1,4 @@
-package com.simbirsoft.kondratyev.ruslan.pizzeria.service;
+package com.simbirsoft.kondratyev.ruslan.pizzeria.repository;
 
 import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.Kitchens;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Connection2BD;
@@ -13,12 +13,7 @@ import java.util.*;
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.*;
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.WRONG_FORMATION;
 
-abstract class DbQueryConstants {
-    public static final String GET_RECIPE = "SELECT * FROM Recipes WHERE id = ?";
-    public static final String INSERT_NEW_RECORD = "INSERT INTO Recipes(id) VALUES (?)";
-}
-
-public class Kitchen extends DbQueryConstants implements Kitchens<Ingredient> {
+public class Kitchen implements Kitchens<Ingredient> {
     private Integer sizePizza = 0;
     private Integer typeOfPizza = 0;
     private Integer currentPortion = 0;
@@ -39,9 +34,9 @@ public class Kitchen extends DbQueryConstants implements Kitchens<Ingredient> {
                 statement.addBatch("ALTER TABLE Recipes ADD "+type+" VARCHAR(30)");
             }
             if (statement.executeBatch().length == 2 + types.size()) {
-                connectBD.commitRollBack("commit");
+                connectBD.commitOrRollBack(Connection2BD.COMMIT_OPERATION);
             } else {
-                connectBD.commitRollBack("rollback");
+                connectBD.commitOrRollBack(Connection2BD.POLLBACK_OPERATION);
             }
             connectBD.closeDB();
         } catch (SQLException err) {
@@ -53,12 +48,7 @@ public class Kitchen extends DbQueryConstants implements Kitchens<Ingredient> {
         maxPortionIngredient = maxIngredient;
         maxPortionPizza = maxPizza;
         typeOfPizza = 1;
-        try {
-            connectBD = new Connection2BD();
-        }
-        catch (ClassNotFoundException err) {
-            throw new MakerException("KitchenConstructer(): " + err.getMessage(), err.getCause());
-        }
+        connectBD = new Connection2BD();
         typesIngredient = types;
         /*creatDataBase(types);*/
     }
@@ -79,11 +69,11 @@ public class Kitchen extends DbQueryConstants implements Kitchens<Ingredient> {
         }
 
         try{
-            PreparedStatement statementDB = connectBD.getConnect(true).prepareStatement("UPDATE Recipes SET "+ingredient.getName()+" = ? WHERE id = " + typeOfPizza);
+            PreparedStatement statementDB = connectBD.getConnect(true).prepareStatement(DbQueryConstants.getUpdateCommand(ingredient.getName()));
             statementDB.setInt(1, countToAdd);
+            statementDB.setInt(2, typeOfPizza);
             statementDB.execute();
             connectBD.closeDB();
-
         }catch (SQLException err) {
             throw new MakerException("Kitchen.addToRecipe(): " + err.getSQLState(), err.getCause());
         }
@@ -109,7 +99,7 @@ public class Kitchen extends DbQueryConstants implements Kitchens<Ingredient> {
 
             try {
                 Connection connect = connectBD.getConnect(true);
-                PreparedStatement statementPrep = connect.prepareStatement(GET_RECIPE);
+                PreparedStatement statementPrep = connect.prepareStatement(DbQueryConstants.GET_RECIPE_KITCHEN);
                 statementPrep.setInt(1,typeOfPizza);
                 ResultSet resultSet = statementPrep.executeQuery();
                 resultSet.next();
@@ -134,7 +124,8 @@ public class Kitchen extends DbQueryConstants implements Kitchens<Ingredient> {
         readinessFlag = false;
         try {
             Connection connect = connectBD.getConnect(true);
-            PreparedStatement statementPrep = connect.prepareStatement(INSERT_NEW_RECORD);
+            PreparedStatement statementPrep = connect.prepareStatement(DbQueryConstants.INSERT_NEW_RECORD_KITCHEN);
+            statementPrep.setInt(1,typeOfPizza);
             statementPrep.execute();
             connectBD.closeDB();
         }catch (SQLException err) {

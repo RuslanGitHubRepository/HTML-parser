@@ -1,10 +1,11 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria;
 
 import com.simbirsoft.kondratyev.ruslan.pizzeria.controllers.Controller;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.ConnectionPropertyFile;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.ConnectionSingltone;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.MakerException;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.models.PropertySingltone;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.repository.StoreHouse;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.service.Kitchen;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.repository.Kitchen;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.views.Dialog;
 
 import java.io.*;
@@ -17,13 +18,11 @@ public class Main {
     public static void main(String[] args) throws Exception {
         String[] names = {"Сыр", "Лук", "Грибы", "Оливки", "Перец", "Керчуп", "Креветки", "Курица", "Ананас"};
         Integer[] counts = {3, 10, 18, 15, 16, 8, 6, 14, 19};
-        InputStream configserverStream = ClassLoader.getSystemClassLoader().getResourceAsStream("configserver.properties");
-        PropertySingltone.load(configserverStream);
+        ConnectionSingltone.initialisationObject(new ConnectionPropertyFile("configserver.properties"));
         try {
             StoreHouse storeHouse = new StoreHouse(
                     new ArrayList<>(Arrays.asList(names)),
                     new ArrayList<>(Arrays.asList(counts)));
-
             Kitchen kitchen = new Kitchen(
                     new ArrayList<>(Arrays.asList(names)),
                     2,

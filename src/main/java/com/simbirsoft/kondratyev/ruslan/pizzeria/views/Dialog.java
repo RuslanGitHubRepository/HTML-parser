@@ -1,10 +1,9 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.views;
 
-import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.Kitchens;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.*;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pair;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.service.Kitchen;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.repository.Kitchen;
 
 import java.util.Collection;
 import java.util.Scanner;

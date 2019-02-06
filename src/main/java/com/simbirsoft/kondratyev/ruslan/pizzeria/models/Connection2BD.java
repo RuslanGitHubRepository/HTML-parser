@@ -6,44 +6,32 @@ public class Connection2BD{
     private Connection connect;
 
     private String connection2DataBase;
-    private Integer countConnrctions = 0;
-    private void connect2DB(boolean setAutoCommit) throws SQLException {
-            connect = DriverManager.getConnection(connection2DataBase, PropertySingltone.getPropertyDataBase());
-            if (setAutoCommit == false) {
-                connect.setAutoCommit(false);
-            }
-    }
+    private Integer countConnections = 0;
 
-    public Connection2BD() throws ClassNotFoundException {
-        connection2DataBase = "jdbc:"+
-                PropertySingltone.getProperty("dbtype")+
-                "://"+ PropertySingltone.getProperty("dblogin")+
-                ":"+ PropertySingltone.getProperty("dbpassword")+
-                "@"+ PropertySingltone.getProperty("dbbase")+
-                ":"+ PropertySingltone.getProperty("dbport")+
-                "/"+ PropertySingltone.getProperty("dbname");
-        Class.forName(PropertySingltone.getProperty("dbdriver"));
-    }
+    public static Integer COMMIT_OPERATION = 0;
+    public static Integer POLLBACK_OPERATION = 1;
 
+    private void creatConnect(boolean setAutoCommit) throws SQLException {
+        connect = ConnectionSingltone.getObject().getConnection();
+        connect.setAutoCommit(setAutoCommit);
+    }
     public Connection getConnect(boolean setAutoCommit) throws SQLException {
         if(connect == null || connect.isClosed()) {
-          connect2DB(setAutoCommit);
+            creatConnect(setAutoCommit);
         }
-        countConnrctions++;
+        countConnections++;
         return connect;
     }
-
-    public void commitRollBack(String type) throws SQLException{
-        if(type.matches("commit")){
+    public void commitOrRollBack(Integer typeOperation) throws SQLException{
+        if(typeOperation.equals(COMMIT_OPERATION)){
             connect.commit();
         }
-        if(type.matches("rollback")){
+        if(typeOperation.equals(POLLBACK_OPERATION)){
             connect.rollback();
         }
     }
-
     public void closeDB() throws SQLException {
-        if(--countConnrctions == 0) {
+        if(--countConnections == 0) {
             connect.close();
         }
     }

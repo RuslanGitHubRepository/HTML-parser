@@ -12,13 +12,7 @@ import java.util.*;
 
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.*;
 
-abstract class DbQueryConstants {
-    public static final String GET_QUANTITY = "SELECT storeCount FROM Ingredients WHERE typeof = ?";
-    public static final String GET_ALL_QUANTITY = "SELECT typeof FROM Ingredients";
-    public static final String UPDATE_COUNTS = "UPDATE Ingredients SET storeCount = ? WHERE typeof = ?";
-}
-
-public class StoreHouse extends DbQueryConstants implements Store<Ingredient> {
+public class StoreHouse  implements Store<Ingredient> {
     private final Connection2BD connectBD;
 
     @Deprecated //алгоритм создания БД вынесен во внешний DDL-script
@@ -27,9 +21,9 @@ public class StoreHouse extends DbQueryConstants implements Store<Ingredient> {
         try {
             Connection connect = connectBD.getConnect(false);
             Statement statement = connect.createStatement();
-            statement.addBatch("DROP TABLE IF EXISTS Ingredients");
-            statement.addBatch("CREATE TABLE IF NOT EXISTS Ingredients (id MEDIUMINT NOT NULL AUTO_INCREMENT, typeof VARCHAR(30) NOT NULL, storeCount MEDIUMINT, PRIMARY KEY (id));");
-            PreparedStatement statementPrep = connect.prepareStatement("INSERT INTO Ingredients(typeof, storeCount) VALUES (?, ?)");
+            statement.addBatch(DbQueryConstants.DROP_TABLE_STORE);
+            statement.addBatch(DbQueryConstants.CREAT_TABLE_STORE);
+            PreparedStatement statementPrep = connect.prepareStatement(DbQueryConstants.INSERT_INTO_TABLE_STORE);
             Iterator<Integer> quantityIter = quantity.iterator();
             for (String type : types) {
                 statementPrep.setString(1, type);
@@ -37,9 +31,9 @@ public class StoreHouse extends DbQueryConstants implements Store<Ingredient> {
                 statementPrep.addBatch();
             }
             if (statement.executeBatch().length == 2 && statementPrep.executeBatch().length == types.size()) {
-                connectBD.commitRollBack("commit");
+                connectBD.commitOrRollBack(Connection2BD.COMMIT_OPERATION);
             } else {
-                connectBD.commitRollBack("rollback");
+                connectBD.commitOrRollBack(Connection2BD.POLLBACK_OPERATION);
             }
             connectBD.closeDB();
         } catch (SQLException err) {
@@ -48,13 +42,7 @@ public class StoreHouse extends DbQueryConstants implements Store<Ingredient> {
     }
 
     public StoreHouse(final Collection<String> types, final Collection<Integer> quantity){
-        try {
             connectBD = new Connection2BD();
-        }
-        catch (ClassNotFoundException err) {
-            throw new MakerException("StoreHouseConstructer(): " + err.getMessage(), err.getCause());
-        }
-        /*creatDataBase(types, quantity);*/
     }
 
     public Wrongs getIngredient(final Ingredient type, final Integer quantity) {
@@ -74,7 +62,7 @@ public class StoreHouse extends DbQueryConstants implements Store<Ingredient> {
     public Integer getQuantity(final Ingredient type){
         try {
             Connection connect = connectBD.getConnect(true);
-            PreparedStatement statementPrep = connect.prepareStatement(GET_QUANTITY);
+            PreparedStatement statementPrep = connect.prepareStatement(DbQueryConstants.GET_QUANTITY_STORE);
             statementPrep.setString(1,type.getName());
             ResultSet requestResult = statementPrep.executeQuery();
             requestResult.next();
@@ -91,7 +79,7 @@ public class StoreHouse extends DbQueryConstants implements Store<Ingredient> {
         try {
             Connection connect = connectBD.getConnect(true);
             Statement statementDB = connect.createStatement();
-            ResultSet requestResult = statementDB.executeQuery(GET_ALL_QUANTITY);
+            ResultSet requestResult = statementDB.executeQuery(DbQueryConstants.GET_ALL_QUANTITY_STORE);
             while (requestResult.next()) {
                 ((LinkedList<Ingredient>) listIndredients).addLast(new Ingredient(requestResult.getString("typeof")));
             }
@@ -109,7 +97,7 @@ public class StoreHouse extends DbQueryConstants implements Store<Ingredient> {
         Integer countIngredient;
         try{
             Connection connect = connectBD.getConnect(false);
-            PreparedStatement statementPrep = connect.prepareStatement(UPDATE_COUNTS);
+            PreparedStatement statementPrep = connect.prepareStatement(DbQueryConstants.UPDATE_COUNTS_STORE);
             for (Map.Entry<Ingredient,Integer> type : ingrediens.entrySet()) {
                 countIngredient = getQuantity(type.getKey());
                 statementPrep.setInt(1, countIngredient - type.getValue());
@@ -117,9 +105,9 @@ public class StoreHouse extends DbQueryConstants implements Store<Ingredient> {
                 statementPrep.addBatch();
             }
             if (statementPrep.executeBatch().length == ingrediens.size()) {
-                connectBD.commitRollBack("commit");
+                connectBD.commitOrRollBack(Connection2BD.COMMIT_OPERATION);
             } else {
-                connectBD.commitRollBack("rollback");
+                connectBD.commitOrRollBack(Connection2BD.COMMIT_OPERATION);
             }
             connectBD.closeDB();
         } catch (SQLException err) {

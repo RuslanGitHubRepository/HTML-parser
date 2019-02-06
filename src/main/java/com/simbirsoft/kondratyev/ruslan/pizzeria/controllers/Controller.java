@@ -6,7 +6,7 @@ import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.Store;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pair;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.service.Kitchen;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.repository.Kitchen;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.views.Dialog;
 
 import java.util.*;
