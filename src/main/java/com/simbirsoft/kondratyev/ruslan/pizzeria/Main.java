@@ -17,9 +17,8 @@ public class Main {
     public static void main(String[] args) throws Exception {
         String[] names = {"Сыр", "Лук", "Грибы", "Оливки", "Перец", "Керчуп", "Креветки", "Курица", "Ананас"};
         Integer[] counts = {3, 10, 18, 15, 16, 8, 6, 14, 19};
-        File file = new File("./src/main/resources/configserver.properties");
-        InputStream input = new FileInputStream(file);
-        PropertySingltone.load(input);
+        InputStream configserverStream = ClassLoader.getSystemClassLoader().getResourceAsStream("configserver.properties");
+        PropertySingltone.load(configserverStream);
         try {
             StoreHouse storeHouse = new StoreHouse(
                     new ArrayList<>(Arrays.asList(names)),
