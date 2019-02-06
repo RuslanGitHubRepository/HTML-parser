@@ -2,16 +2,16 @@ package com.simbirsoft.kondratyev.ruslan.pizzeria.models;
 import java.util.Properties;
 import java.io.*;
 
-public class propertySingltone {
+public class PropertySingltone {
     private final Properties propertyDataBase = new Properties();
 
-    private static propertySingltone object;
+    private static PropertySingltone object;
 
-    private propertySingltone(){}
+    private PropertySingltone(){}
 
-    private static propertySingltone getObject() {
+    private static PropertySingltone getObject() {
         if(object == null){
-            object = new propertySingltone();
+            object = new PropertySingltone();
         }
         return object;
     }

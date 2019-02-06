@@ -5,18 +5,23 @@ import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Connection2BD;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.MakerException;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.models.propertySingltone;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.views.Dialog;
 
 import java.sql.*;
 import java.util.*;
-import java.io.InputStream;
 
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.*;
 
-public class StoreHouse implements Store<Ingredient> {
+abstract class DbQueryConstants {
+    public static final String GET_QUANTITY = "SELECT storeCount FROM Ingredients WHERE typeof = ?";
+    public static final String GET_ALL_QUANTITY = "SELECT typeof FROM Ingredients";
+    public static final String UPDATE_COUNTS = "UPDATE Ingredients SET storeCount = ? WHERE typeof = ?";
+}
+
+public class StoreHouse extends DbQueryConstants implements Store<Ingredient> {
     private final Connection2BD connectBD;
 
+    @Deprecated //алгоритм создания БД вынесен во внешний DDL-script
     private void creatDataBase(final Collection<String> types, final Collection<Integer> quantity) {
 
         try {
@@ -49,7 +54,7 @@ public class StoreHouse implements Store<Ingredient> {
         catch (ClassNotFoundException err) {
             throw new MakerException("StoreHouseConstructer(): " + err.getMessage(), err.getCause());
         }
-        creatDataBase(types, quantity);
+        /*creatDataBase(types, quantity);*/
     }
 
     public Wrongs getIngredient(final Ingredient type, final Integer quantity) {
@@ -69,7 +74,7 @@ public class StoreHouse implements Store<Ingredient> {
     public Integer getQuantity(final Ingredient type){
         try {
             Connection connect = connectBD.getConnect(true);
-            PreparedStatement statementPrep = connect.prepareStatement("SELECT storeCount FROM Ingredients WHERE typeof = ?");
+            PreparedStatement statementPrep = connect.prepareStatement(GET_QUANTITY);
             statementPrep.setString(1,type.getName());
             ResultSet requestResult = statementPrep.executeQuery();
             requestResult.next();
@@ -86,7 +91,7 @@ public class StoreHouse implements Store<Ingredient> {
         try {
             Connection connect = connectBD.getConnect(true);
             Statement statementDB = connect.createStatement();
-            ResultSet requestResult = statementDB.executeQuery("SELECT typeof FROM Ingredients;");
+            ResultSet requestResult = statementDB.executeQuery(GET_ALL_QUANTITY);
             while (requestResult.next()) {
                 ((LinkedList<Ingredient>) listIndredients).addLast(new Ingredient(requestResult.getString("typeof")));
             }
@@ -104,7 +109,7 @@ public class StoreHouse implements Store<Ingredient> {
         Integer countIngredient;
         try{
             Connection connect = connectBD.getConnect(false);
-            PreparedStatement statementPrep = connect.prepareStatement("UPDATE Ingredients SET storeCount = ? WHERE typeof = ?");
+            PreparedStatement statementPrep = connect.prepareStatement(UPDATE_COUNTS);
             for (Map.Entry<Ingredient,Integer> type : ingrediens.entrySet()) {
                 countIngredient = getQuantity(type.getKey());
                 statementPrep.setInt(1, countIngredient - type.getValue());

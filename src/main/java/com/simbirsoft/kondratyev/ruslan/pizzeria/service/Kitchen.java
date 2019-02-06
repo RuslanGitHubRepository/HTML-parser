@@ -5,7 +5,6 @@ import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Connection2BD;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.MakerException;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.models.propertySingltone;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.views.Dialog;
 
 import java.sql.*;
@@ -14,7 +13,12 @@ import java.util.*;
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.*;
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.WRONG_FORMATION;
 
-public class Kitchen implements Kitchens<Ingredient> {
+abstract class DbQueryConstants {
+    public static final String GET_RECIPE = "SELECT * FROM Recipes WHERE id = ?";
+    public static final String INSERT_NEW_RECORD = "INSERT INTO Recipes(id) VALUES (?)";
+}
+
+public class Kitchen extends DbQueryConstants implements Kitchens<Ingredient> {
     private Integer sizePizza = 0;
     private Integer typeOfPizza = 0;
     private Integer currentPortion = 0;
@@ -24,6 +28,7 @@ public class Kitchen implements Kitchens<Ingredient> {
     public static Integer maxPortionPizza = 0;
     public static Integer maxPortionIngredient = 0;
 
+    @Deprecated //алгоритм создания БД вынесен во внешний DDL-script
     private void creatDataBase(final Collection<String> types) {
         try {
             Connection connect = connectBD.getConnect(false);
@@ -55,7 +60,7 @@ public class Kitchen implements Kitchens<Ingredient> {
             throw new MakerException("KitchenConstructer(): " + err.getMessage(), err.getCause());
         }
         typesIngredient = types;
-        creatDataBase(types);
+        /*creatDataBase(types);*/
     }
 
     public Wrongs addToRecipe(Ingredient ingredient, Integer countToAdd) {
@@ -103,8 +108,10 @@ public class Kitchen implements Kitchens<Ingredient> {
         pizza.add("Размер пиццы: " + sizePizza);
 
             try {
-                Statement statementDB = connectBD.getConnect(true).createStatement();
-                ResultSet resultSet = statementDB.executeQuery("SELECT * FROM Recipes WHERE id = " + typeOfPizza);
+                Connection connect = connectBD.getConnect(true);
+                PreparedStatement statementPrep = connect.prepareStatement(GET_RECIPE);
+                statementPrep.setInt(1,typeOfPizza);
+                ResultSet resultSet = statementPrep.executeQuery();
                 resultSet.next();
                 for (String str : typesIngredient){
                     if(resultSet.getInt(str) != 0) {
@@ -126,9 +133,10 @@ public class Kitchen implements Kitchens<Ingredient> {
         currentPortion = 0;
         readinessFlag = false;
         try {
-            Statement statementDB = connectBD.getConnect(true).createStatement();
-             statementDB.execute("INSERT INTO Recipes(id) VALUES ("+typeOfPizza+")");
-             connectBD.closeDB();
+            Connection connect = connectBD.getConnect(true);
+            PreparedStatement statementPrep = connect.prepareStatement(INSERT_NEW_RECORD);
+            statementPrep.execute();
+            connectBD.closeDB();
         }catch (SQLException err) {
             throw new MakerException("Kn.restartKitchen(): " + err.getSQLState(), err.getCause());
         }

@@ -1,0 +1,11 @@
+DROP TABLE IF EXISTS Ingredients;
+CREATE TABLE IF NOT EXISTS Ingredients (id MEDIUMINT NOT NULL AUTO_INCREMENT, typeof VARCHAR(30) NOT NULL, storeCount MEDIUMINT, PRIMARY KEY (id));
+INSERT INTO Ingredients(typeof, storeCount) VALUES ('Сыр', 3);
+INSERT INTO Ingredients(typeof, storeCount) VALUES ('Лук', 10);
+INSERT INTO Ingredients(typeof, storeCount) VALUES ('Грибы', 18);
+INSERT INTO Ingredients(typeof, storeCount) VALUES ('Оливки', 15);
+INSERT INTO Ingredients(typeof, storeCount) VALUES ('Перец', 16);
+INSERT INTO Ingredients(typeof, storeCount) VALUES ('Кетчуп', 8);
+INSERT INTO Ingredients(typeof, storeCount) VALUES ('Креветки', 6);
+INSERT INTO Ingredients(typeof, storeCount) VALUES ('Курица', 14);
+INSERT INTO Ingredients(typeof, storeCount) VALUES ('Ананас', 19);
