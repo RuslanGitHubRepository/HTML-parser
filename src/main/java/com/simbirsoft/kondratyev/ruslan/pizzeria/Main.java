@@ -20,13 +20,8 @@ public class Main {
         Integer[] counts = {3, 10, 18, 15, 16, 8, 6, 14, 19};
         ConnectionSingltone.initialisationObject(new ConnectionPropertyFile("configserver.properties"));
         try {
-            StoreHouse storeHouse = new StoreHouse(
-                    new ArrayList<>(Arrays.asList(names)),
-                    new ArrayList<>(Arrays.asList(counts)));
-            Kitchen kitchen = new Kitchen(
-                    new ArrayList<>(Arrays.asList(names)),
-                    2,
-                    10);
+            StoreHouse storeHouse = new StoreHouse();
+            Kitchen kitchen = new Kitchen(2,10);
             Dialog dialog = new Dialog();
             Controller controller = new Controller(storeHouse, dialog, kitchen);
             controller.exec();

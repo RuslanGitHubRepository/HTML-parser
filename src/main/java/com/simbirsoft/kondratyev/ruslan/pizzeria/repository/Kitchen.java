@@ -12,47 +12,65 @@ import java.util.*;
 
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.*;
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.WRONG_FORMATION;
-
+class DataBaseInterplayKitchen {
+    private final Connection2BD connectBD;
+    DataBaseInterplayKitchen(){
+        connectBD = new Connection2BD();
+    }
+    void addToRecipe(String nameIngredient, Integer countIngredient){
+    try {
+        Connection connect = connectBD.getConnect(true);
+        PreparedStatement statementPrep = connect.prepareStatement(DbQueryConstants.INSERT_NEW_RECORD_KITCHEN);
+        statementPrep.setString(1, nameIngredient);
+        statementPrep.setInt(2, countIngredient);
+        statementPrep.execute();
+        connectBD.closeDB();
+    }catch (SQLException err) {
+        throw new MakerException("Kn.restartKitchen(): " + err.getSQLState(), err.getCause());
+    }
+    }
+    List<String> getFinaliseRecipe(){
+        List<String> order = new ArrayList<>();
+        try {
+            Connection connect = connectBD.getConnect(true);
+            Statement statement = connect.createStatement();
+            ResultSet resultSet = statement.executeQuery(DbQueryConstants.GET_RECIPE_KITCHEN);
+            while(resultSet.next()) {
+                order.add(resultSet.getString("name_ingredient") + "->" + resultSet.getInt("count_ingredient") + " пр.");
+            }
+            connectBD.closeDB();
+        } catch (SQLException err) {
+            throw new MakerException("Kn.getPizza(): " + err.getSQLState(), err.getCause());
+        }
+        return order;
+    }
+    void clearOrder(){
+    try {
+        Connection connect = connectBD.getConnect(true);
+        Statement statement = connect.createStatement();
+        statement.execute(DbQueryConstants.CLEAR_RECIPE_KITCHEN);
+        connectBD.closeDB();
+    } catch (SQLException err) {
+        throw new MakerException("Kn.getPizza(): " + err.getSQLState(), err.getCause());
+    }
+    }
+}
 public class Kitchen implements Kitchens<Ingredient> {
     private Integer sizePizza = 0;
     private Integer typeOfPizza = 0;
     private Integer currentPortion = 0;
     private final Connection2BD connectBD;
-    private Collection<String> typesIngredient;
     public static boolean readinessFlag = false;
     public static Integer maxPortionPizza = 0;
     public static Integer maxPortionIngredient = 0;
+    private DataBaseInterplayKitchen dataBaseInterplayKitchen = new DataBaseInterplayKitchen();
 
-    @Deprecated //алгоритм создания БД вынесен во внешний DDL-script
-    private void creatDataBase(final Collection<String> types) {
-        try {
-            Connection connect = connectBD.getConnect(false);
-            Statement statement = connect.createStatement();
-            statement.addBatch("DROP TABLE IF EXISTS Recipes");
-            statement.addBatch("CREATE TABLE IF NOT EXISTS Recipes (id MEDIUMINT NOT NULL, PRIMARY KEY (id))");
-            for (String type : types) {
-                statement.addBatch("ALTER TABLE Recipes ADD "+type+" VARCHAR(30)");
-            }
-            if (statement.executeBatch().length == 2 + types.size()) {
-                connectBD.commitOrRollBack(Connection2BD.COMMIT_OPERATION);
-            } else {
-                connectBD.commitOrRollBack(Connection2BD.POLLBACK_OPERATION);
-            }
-            connectBD.closeDB();
-        } catch (SQLException err) {
-            throw new MakerException("Kitchen.creatDataBase(): " + err.getSQLState(), err.getCause());
-        }
-    }
-
-    public Kitchen(final Collection<String> types, final Integer maxIngredient, final Integer maxPizza) {
+    public Kitchen(final Integer maxIngredient, final Integer maxPizza) {
         maxPortionIngredient = maxIngredient;
         maxPortionPizza = maxPizza;
         typeOfPizza = 1;
         connectBD = new Connection2BD();
-        typesIngredient = types;
-        /*creatDataBase(types);*/
     }
-
     public Wrongs addToRecipe(Ingredient ingredient, Integer countToAdd) {
 
         if (countToAdd == Dialog.ABORT){
@@ -68,15 +86,7 @@ public class Kitchen implements Kitchens<Ingredient> {
             return WRONG_NONE;
         }
 
-        try{
-            PreparedStatement statementDB = connectBD.getConnect(true).prepareStatement(DbQueryConstants.getUpdateCommand(ingredient.getName()));
-            statementDB.setInt(1, countToAdd);
-            statementDB.setInt(2, typeOfPizza);
-            statementDB.execute();
-            connectBD.closeDB();
-        }catch (SQLException err) {
-            throw new MakerException("Kitchen.addToRecipe(): " + err.getSQLState(), err.getCause());
-        }
+        dataBaseInterplayKitchen.addToRecipe(ingredient.getName(),countToAdd);
 
         currentPortion += countToAdd;
         if (currentPortion.equals(maxPortionPizza)){
@@ -96,23 +106,7 @@ public class Kitchen implements Kitchens<Ingredient> {
     public Collection<String> getPizza() {
         List<String> pizza = new ArrayList<>();
         pizza.add("Размер пиццы: " + sizePizza);
-
-            try {
-                Connection connect = connectBD.getConnect(true);
-                PreparedStatement statementPrep = connect.prepareStatement(DbQueryConstants.GET_RECIPE_KITCHEN);
-                statementPrep.setInt(1,typeOfPizza);
-                ResultSet resultSet = statementPrep.executeQuery();
-                resultSet.next();
-                for (String str : typesIngredient){
-                    if(resultSet.getInt(str) != 0) {
-                        pizza.add(str + "->" + resultSet.getInt(str) + " пр.");
-                    }
-                }
-                connectBD.closeDB();
-            } catch (SQLException err) {
-                throw new MakerException("Kn.getPizza(): " + err.getSQLState(), err.getCause());
-            }
-
+        pizza.addAll(dataBaseInterplayKitchen.getFinaliseRecipe());
         readinessFlag = true;
         typeOfPizza++;
         return pizza;
@@ -122,14 +116,6 @@ public class Kitchen implements Kitchens<Ingredient> {
         sizePizza = 0;
         currentPortion = 0;
         readinessFlag = false;
-        try {
-            Connection connect = connectBD.getConnect(true);
-            PreparedStatement statementPrep = connect.prepareStatement(DbQueryConstants.INSERT_NEW_RECORD_KITCHEN);
-            statementPrep.setInt(1,typeOfPizza);
-            statementPrep.execute();
-            connectBD.closeDB();
-        }catch (SQLException err) {
-            throw new MakerException("Kn.restartKitchen(): " + err.getSQLState(), err.getCause());
-        }
+        dataBaseInterplayKitchen.clearOrder();
     }
 }

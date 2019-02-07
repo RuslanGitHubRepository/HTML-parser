@@ -32,7 +32,7 @@ public class ConnectionPropertyFile implements Connections {
            new MakerException(err.getMessage(),err.getCause());
     }
     }
-    public void getURLBase()
+    public void formURLBase()
     {
         StringBuilder str = new StringBuilder(TYPE_API_JDBC);
 
@@ -58,7 +58,7 @@ public class ConnectionPropertyFile implements Connections {
     }
     public Connection getConnection(){
         if(url == null) {
-            getURLBase();
+            formURLBase();
         }
         try {
             return DriverManager.getConnection(url, propertyDataBase);
