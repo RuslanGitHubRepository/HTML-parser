@@ -4,14 +4,14 @@ import javax.persistence.*;
 
 @Entity
 @NamedQueries(value = {
-        @NamedQuery(name = Recipes.getRecipe, query = "SELECT re.recipe FROM Recipes re WHERE re.recipe.id = :serialNumber")
+        @NamedQuery(name = Recipes.getRecipe, query = "SELECT re.recipe FROM Recipes re JOIN FETCH re.recipe.ingredients WHERE re.recipe.id = :serialNumber")
 })
 public class Recipes {
     public static final String getRecipe = "getRecipe";
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     private String nameRecipes;
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     private Recipe recipe;
 
     public Recipes(){}

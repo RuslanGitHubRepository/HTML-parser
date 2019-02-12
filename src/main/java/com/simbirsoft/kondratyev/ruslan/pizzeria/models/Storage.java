@@ -6,8 +6,8 @@ import java.io.Serializable;
 @Entity
 @NamedQueries(value = {
         @NamedQuery(name = Storage.getAllStoreIngredient, query = "SELECT st.ingredients FROM Storage st WHERE st.tailsIngredient > 0"),
-        @NamedQuery(name = Storage.getAllStorage, query = "SELECT st FROM Storage st WHERE st.tailsIngredient > 0"),
-        @NamedQuery(name = Storage.getOneUnit, query = "SELECT st FROM Storage st WHERE st.ingredients.name = :name")
+        @NamedQuery(name = Storage.getAllStorage, query = "SELECT st FROM Storage st JOIN FETCH st.ingredients WHERE st.tailsIngredient > 0"),
+        @NamedQuery(name = Storage.getOneUnit, query = "SELECT st FROM Storage st JOIN FETCH st.ingredients WHERE st.ingredients.name = :name")
 })
 public class Storage  implements Serializable {
     public static final String getAllStoreIngredient = "getAllStoreIngredient";
@@ -16,7 +16,7 @@ public class Storage  implements Serializable {
     public static final String updateUnit = "updateUnit";
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.REFRESH)
+    @OneToOne(fetch = FetchType.LAZY)
     private Ingredient ingredients;
     @Column(name = "tails")
 

@@ -8,7 +8,7 @@ public class Recipe implements Serializable {
     public static final String insertUnit = "insertUnit";
     @Id@GeneratedValue
     private Integer id;
-    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
+    @OneToOne(fetch = FetchType.LAZY)
     private Ingredient ingredients;
     private Integer recipeNumber;
     private Integer countIngredient;
