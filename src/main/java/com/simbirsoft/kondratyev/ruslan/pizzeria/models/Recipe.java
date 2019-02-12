@@ -1,24 +1,21 @@
-package com.simbirsoft.kondratyev.ruslan.pizzeria.models.HibernateDataBase;
+package com.simbirsoft.kondratyev.ruslan.pizzeria.models;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@NamedNativeQueries(value = {
-        @NamedNativeQuery(name = Recipe.insertUnit, query = "INSERT INTO recipe(countIngredient,recipeNumber,ingredients_id) VALUES (?1,?2,?3)"),
-})
-    public class Recipe implements Serializable {
+public class Recipe implements Serializable {
     public static final String insertUnit = "insertUnit";
     @Id@GeneratedValue
     private Integer id;
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
     private Ingredient ingredients;
     private Integer recipeNumber;
     private Integer countIngredient;
 
     public Recipe(){}
 
-    public Integer getCountIngredient() {
+    public Integer setCountIngredient() {
         return countIngredient;
     }
 

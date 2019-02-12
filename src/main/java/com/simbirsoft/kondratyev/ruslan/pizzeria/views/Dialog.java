@@ -1,6 +1,6 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.views;
 
-import com.simbirsoft.kondratyev.ruslan.pizzeria.models.HibernateDataBase.Ingredient;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.*;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pair;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.repository.Kitchen;

@@ -1,24 +1,25 @@
-package com.simbirsoft.kondratyev.ruslan.pizzeria.models.HibernateDataBase;
+package com.simbirsoft.kondratyev.ruslan.pizzeria.models;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
 @NamedQueries(value = {
-        @NamedQuery(name = Storage.getAllUnit, query = "SELECT st FROM Storage st WHERE st.tailsIngredient > 0"),
-        @NamedQuery(name = Storage.getOneUnit, query = "SELECT st FROM Storage st WHERE st.ingredients.name = :name"),
-        @NamedQuery(name = Storage.updateUnit, query = "UPDATE Storage st SET st.tailsIngredient = ?1 WHERE st.ingredients.name = ?2"),
+        @NamedQuery(name = Storage.getAllStoreIngredient, query = "SELECT st.ingredients FROM Storage st WHERE st.tailsIngredient > 0"),
+        @NamedQuery(name = Storage.getAllStorage, query = "SELECT st FROM Storage st WHERE st.tailsIngredient > 0"),
+        @NamedQuery(name = Storage.getOneUnit, query = "SELECT st FROM Storage st WHERE st.ingredients.name = :name")
 })
 public class Storage  implements Serializable {
-    public static final String getAllUnit = "getAllUnit";
+    public static final String getAllStoreIngredient = "getAllStoreIngredient";
+    public static final String getAllStorage = "getAllStorage";
     public static final String getOneUnit = "getOneUnit";
     public static final String updateUnit = "updateUnit";
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.REFRESH)
     private Ingredient ingredients;
     @Column(name = "tails")
+
     private Integer tailsIngredient;
     @Column(name = "cost")
     private Double costIngredient;

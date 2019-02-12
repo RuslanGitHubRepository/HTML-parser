@@ -1,7 +1,6 @@
-package com.simbirsoft.kondratyev.ruslan.pizzeria.models.HibernateDataBase;
+package com.simbirsoft.kondratyev.ruslan.pizzeria.models;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @NamedQueries(value = {

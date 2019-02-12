@@ -1,7 +1,7 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria;
 
 import com.simbirsoft.kondratyev.ruslan.pizzeria.controllers.Controller;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.models.MakerException;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Exceptions.MakerException;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.repository.StoreHouse;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.repository.Kitchen;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.views.Dialog;

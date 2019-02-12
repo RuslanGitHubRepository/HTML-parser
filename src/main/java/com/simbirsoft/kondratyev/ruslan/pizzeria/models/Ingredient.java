@@ -1,9 +1,7 @@
-package com.simbirsoft.kondratyev.ruslan.pizzeria.models.HibernateDataBase;
+package com.simbirsoft.kondratyev.ruslan.pizzeria.models;
 
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Taste;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Condition;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Taste;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.models.HibernateDataBase.*;
 
 import javax.persistence.Entity;
 import javax.persistence.*;

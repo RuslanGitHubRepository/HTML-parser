@@ -8,12 +8,13 @@
         <property name="connection.password">master</property>
         <property name="dialect">org.hibernate.dialect.MySQL8Dialect</property>
         <property name="show_sql">true</property>
+        <property name="hibernate.current_session_context_class">thread</property>
         <property name="hbm2ddl.auto">validate</property>
 
-        <mapping class="com.simbirsoft.kondratyev.ruslan.pizzeria.models.HibernateDataBase.Ingredient"/>
-        <mapping class="com.simbirsoft.kondratyev.ruslan.pizzeria.models.HibernateDataBase.Storage"/>
-        <mapping class="com.simbirsoft.kondratyev.ruslan.pizzeria.models.HibernateDataBase.Recipe"/>
-        <mapping class="com.simbirsoft.kondratyev.ruslan.pizzeria.models.HibernateDataBase.Recipes"/>
+        <mapping class="com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient"/>
+        <mapping class="com.simbirsoft.kondratyev.ruslan.pizzeria.models.Storage"/>
+        <mapping class="com.simbirsoft.kondratyev.ruslan.pizzeria.models.Recipe"/>
+        <mapping class="com.simbirsoft.kondratyev.ruslan.pizzeria.models.Recipes"/>
 
     </session-factory>
 </hibernate-configuration>

@@ -1,4 +1,4 @@
-package com.simbirsoft.kondratyev.ruslan.pizzeria.models;
+package com.simbirsoft.kondratyev.ruslan.pizzeria.models.Exceptions;
 
 public class MakerException extends RuntimeException {
     private String state;

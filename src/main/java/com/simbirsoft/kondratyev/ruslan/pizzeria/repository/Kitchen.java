@@ -1,12 +1,14 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.repository;
 
+import com.simbirsoft.kondratyev.ruslan.pizzeria.HibernateUtil;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.Kitchens;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.models.DataExchange;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.models.HibernateDataBase.Ingredient;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.models.HibernateDataBase.Recipe;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Recipe;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Recipes;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.views.Dialog;
 
+import javax.persistence.TypedQuery;
 import java.util.*;
 
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.*;
@@ -42,7 +44,16 @@ public class Kitchen implements Kitchens<Ingredient> {
             return WRONG_NONE;
         }
 
-        DataExchange.updateRecipe(typeOfPizza,countToAdd,ingredient);
+        HibernateUtil.openSession();
+        Recipe recipe = new Recipe();
+
+        recipe.setCountIngredient(countToAdd);
+        recipe.setRecipeNumber(typeOfPizza);
+        recipe.setIngredients(ingredient);
+
+        HibernateUtil.getSession().persist(recipe);
+
+        HibernateUtil.commitSession();
 
         currentPortion += countToAdd;
         if (currentPortion.equals(maxPortionPizza)){
@@ -62,10 +73,18 @@ public class Kitchen implements Kitchens<Ingredient> {
     public Collection<String> getPizza() {
         List<String> pizza = new ArrayList<>();
         pizza.add("Размер пиццы: " + sizePizza);
-        List<Recipe> recipes = DataExchange.getRecipe(typeOfPizza);
+
+        HibernateUtil.openSession();
+
+        TypedQuery<Recipe> queryType = HibernateUtil.getSession().createNamedQuery(Recipes.getRecipe,Recipe.class);
+        queryType.setParameter("serialNumber",typeOfPizza);
+        List<Recipe> recipes = queryType.getResultList();
+
         for(Recipe recipe: recipes){
             pizza.add(recipe.getIngredients().getName());
         }
+
+        HibernateUtil.commitSession();
         readinessFlag = true;
         typeOfPizza++;
         return pizza;
