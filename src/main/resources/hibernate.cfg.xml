@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM "http://hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/pizzaMaker?serverTimezone=UTC</property>
+        <property name="connection.username">ruslan</property>
+        <property name="connection.password">master</property>
+        <property name="dialect">org.hibernate.dialect.MySQL8Dialect</property>
+        <property name="show_sql">true</property>
+        <property name="hbm2ddl.auto">validate</property>
+
+        <mapping class="com.simbirsoft.kondratyev.ruslan.pizzeria.models.HibernateDataBase.Ingredient"/>
+        <mapping class="com.simbirsoft.kondratyev.ruslan.pizzeria.models.HibernateDataBase.Storage"/>
+        <mapping class="com.simbirsoft.kondratyev.ruslan.pizzeria.models.HibernateDataBase.Recipe"/>
+        <mapping class="com.simbirsoft.kondratyev.ruslan.pizzeria.models.HibernateDataBase.Recipes"/>
+
+    </session-factory>
+</hibernate-configuration>

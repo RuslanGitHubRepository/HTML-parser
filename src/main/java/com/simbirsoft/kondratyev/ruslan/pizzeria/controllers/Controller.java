@@ -3,7 +3,7 @@ package com.simbirsoft.kondratyev.ruslan.pizzeria.controllers;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.Controllers;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.Kitchens;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.Store;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.HibernateDataBase.Ingredient;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pair;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.repository.Kitchen;
