@@ -17,7 +17,7 @@ import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.WRON
 
 public class Kitchen implements Kitchens<Ingredient> {
     private Integer sizePizza = 0;
-    private Integer typeOfPizza = 0;
+    public static Integer typeOfPizza = 0;
     private Integer currentPortion = 0;
     public static boolean readinessFlag = false;
     public static Integer maxPortionPizza = 0;
@@ -48,7 +48,7 @@ public class Kitchen implements Kitchens<Ingredient> {
         Recipe recipe = new Recipe();
 
         recipe.setCountIngredient(countToAdd);
-        recipe.setRecipeNumber(typeOfPizza);
+        recipe.setRecipeNumber(new Recipes("recipe #" + Kitchen.typeOfPizza, Kitchen.typeOfPizza));
         recipe.setIngredients(ingredient);
 
         HibernateUtil.getSession().persist(recipe);
@@ -76,12 +76,12 @@ public class Kitchen implements Kitchens<Ingredient> {
 
         HibernateUtil.openSession();
 
-        TypedQuery<Recipe> queryType = HibernateUtil.getSession().createNamedQuery(Recipes.getRecipe,Recipe.class);
+        TypedQuery<Recipe> queryType = HibernateUtil.getSession().createNamedQuery(Recipe.getRecipe, Recipe.class);
         queryType.setParameter("serialNumber",typeOfPizza);
         List<Recipe> recipes = queryType.getResultList();
 
         for(Recipe recipe: recipes){
-            pizza.add(recipe.getIngredients().getName());
+            pizza.add(recipe.getIngredients().getName() + " = " + recipe.setCountIngredient());
         }
 
         HibernateUtil.commitSession();

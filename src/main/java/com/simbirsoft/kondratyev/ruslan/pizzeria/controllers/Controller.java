@@ -1,14 +1,16 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.controllers;
 
+import com.simbirsoft.kondratyev.ruslan.pizzeria.HibernateUtil;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.Controllers;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.Kitchens;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.Store;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pair;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.*;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.repository.Kitchen;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.views.Dialog;
+import org.hibernate.query.Query;
 
+import javax.persistence.TypedQuery;
 import java.util.*;
 
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Suggest.INGREDIENT;
@@ -30,6 +32,12 @@ public class Controller implements Controllers<Ingredient> {
         Integer countIngredientStore = 0;
         Integer countIngredientUser = 0;
 
+        HibernateUtil.openSession();
+        Recipes recipe = new Recipes();
+        recipe.setNameRecipes("recipe #"+Kitchen.typeOfPizza);
+        HibernateUtil.getSession().save(recipe);
+        HibernateUtil.commitSession();
+
         for (Ingredient ingredient : ingredients) {
             countIngredientStore = storeHouse.getQuantity(ingredient);
             if (countIngredientStore == 0) {
@@ -37,6 +45,7 @@ public class Controller implements Controllers<Ingredient> {
             }
             while (true) {
                 countIngredientUser = dialog.suggest(INGREDIENT, new Pair<>(ingredient, countIngredientStore));
+
 
                 globalWrongs = kitchen.addToRecipe(ingredient, countIngredientUser);
 
@@ -56,6 +65,14 @@ public class Controller implements Controllers<Ingredient> {
                 }
             }
             if (globalWrongs == WRONG_WASHOUT || Kitchen.readinessFlag) {
+                if(globalWrongs == WRONG_WASHOUT ){
+                    HibernateUtil.openSession();
+                    Query query = HibernateUtil.getSession().createNamedQuery(Recipe.deleteRecipes);
+                    query.setParameter("idNumber", Kitchen.typeOfPizza);
+                    query.executeUpdate();
+                    HibernateUtil.getSession().delete(recipe);
+                    HibernateUtil.commitSession();
+                }
                 break;
             }
         }

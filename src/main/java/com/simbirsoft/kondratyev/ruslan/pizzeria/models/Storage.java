@@ -9,6 +9,7 @@ import java.io.Serializable;
         @NamedQuery(name = Storage.getAllStorage, query = "SELECT st FROM Storage st JOIN FETCH st.ingredients WHERE st.tailsIngredient > 0"),
         @NamedQuery(name = Storage.getOneUnit, query = "SELECT st FROM Storage st JOIN FETCH st.ingredients WHERE st.ingredients.name = :name")
 })
+@Table(name = "storage")
 public class Storage  implements Serializable {
     public static final String getAllStoreIngredient = "getAllStoreIngredient";
     public static final String getAllStorage = "getAllStorage";
@@ -19,7 +20,6 @@ public class Storage  implements Serializable {
     @OneToOne(fetch = FetchType.LAZY)
     private Ingredient ingredients;
     @Column(name = "tails")
-
     private Integer tailsIngredient;
     @Column(name = "cost")
     private Double costIngredient;

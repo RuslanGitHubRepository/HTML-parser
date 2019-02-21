@@ -43,7 +43,6 @@ public class StoreHouse  implements Store<Ingredient> {
     public Collection<Ingredient> getAllIngredients() {
         Collection<Ingredient> listIndredients = new LinkedList<>();
         HibernateUtil.openSession();
-
         TypedQuery<Ingredient> query = HibernateUtil.getSession().createNamedQuery(Storage.getAllStoreIngredient, Ingredient.class);
         listIndredients = query.getResultList();
 
