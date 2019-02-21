@@ -7,13 +7,14 @@ import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Recipe;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Recipes;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.views.Dialog;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.util.*;
 
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.*;
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.WRONG_FORMATION;
-
 
 public class Kitchen implements Kitchens<Ingredient> {
     private Integer sizePizza = 0;
@@ -45,16 +46,20 @@ public class Kitchen implements Kitchens<Ingredient> {
         }
 
         HibernateUtil.openSession();
-        Recipe recipe = new Recipe();
 
+        Recipe recipe = new Recipe();
         recipe.setCountIngredient(countToAdd);
         recipe.setRecipeNumber(new Recipes("recipe #" + Kitchen.typeOfPizza, Kitchen.typeOfPizza));
         recipe.setIngredients(ingredient);
+        try {
+            HibernateUtil.getSession().persist(recipe);
 
-        HibernateUtil.getSession().persist(recipe);
-
-        HibernateUtil.commitSession();
-
+            HibernateUtil.commitSession();
+        }
+        catch(Exception err){
+            HibernateUtil.getSession().close();
+            return WRONG_INPUT;
+        }
         currentPortion += countToAdd;
         if (currentPortion.equals(maxPortionPizza)){
             readinessFlag = true;
@@ -86,7 +91,7 @@ public class Kitchen implements Kitchens<Ingredient> {
 
         HibernateUtil.commitSession();
         readinessFlag = true;
-        typeOfPizza++;
+        /*typeOfPizza;*/
         return pizza;
     }
 

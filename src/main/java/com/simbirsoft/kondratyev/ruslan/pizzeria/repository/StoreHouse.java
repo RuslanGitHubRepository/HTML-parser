@@ -3,16 +3,20 @@ package com.simbirsoft.kondratyev.ruslan.pizzeria.repository;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.HibernateUtil;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.Store;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pair;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Storage;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.views.Dialog;
+import org.springframework.stereotype.Service;
 
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.util.*;
 
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.*;
 
-
+@Service(value = "storeServise")
+@Transactional
 public class StoreHouse  implements Store<Ingredient> {
 
     public Wrongs getIngredient(final Ingredient type, final Integer quantity) {
@@ -41,7 +45,7 @@ public class StoreHouse  implements Store<Ingredient> {
     }
 
     public Collection<Ingredient> getAllIngredients() {
-        Collection<Ingredient> listIndredients = new LinkedList<>();
+        Collection<Ingredient> listIndredients;
         HibernateUtil.openSession();
         TypedQuery<Ingredient> query = HibernateUtil.getSession().createNamedQuery(Storage.getAllStoreIngredient, Ingredient.class);
         listIndredients = query.getResultList();
@@ -51,7 +55,7 @@ public class StoreHouse  implements Store<Ingredient> {
         return listIndredients;
     }
 
-    public void commitStore(Map<Ingredient,Integer> ingrediens) {
+    public void commitStore(List<Pair<Ingredient,Integer>> ingrediens) {
         if(ingrediens.size() == 0){
             return;
         }
@@ -62,11 +66,11 @@ public class StoreHouse  implements Store<Ingredient> {
         TypedQuery<Storage> query = HibernateUtil.getSession().createNamedQuery(Storage.getAllStorage, Storage.class);
         listStorage = query.getResultList();
         Iterator<Storage> iteratorStorage = listStorage.iterator();
-        for(Map.Entry<Ingredient,Integer> entry : ingrediens.entrySet())
+        for(Pair<Ingredient,Integer> pair : ingrediens)
         {
             Storage storage = iteratorStorage.next();
             storage.setCostIngredient(0.0);
-            storage.setTailsIngredient(storage.getTailsIngredient() - entry.getValue());
+            storage.setTailsIngredient(storage.getTailsIngredient() - pair.getSecond());
             HibernateUtil.getSession().saveOrUpdate(storage);
         }
         HibernateUtil.commitSession();

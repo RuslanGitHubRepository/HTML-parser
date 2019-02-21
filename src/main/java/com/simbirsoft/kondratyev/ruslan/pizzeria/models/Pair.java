@@ -1,9 +1,15 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.models;
 
-public class Pair<A, B> {
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.io.Serializable;
+@Service
+@Transactional
+public class Pair<A, B> implements Serializable {
     private A first;
     private B second;
-
+    public Pair() {}
     public Pair(A first, B second) {
         super();
 

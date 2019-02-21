@@ -22,7 +22,7 @@ public class Controller implements Controllers<Ingredient> {
     private Dialog dialog;
     private Kitchens<Ingredient> kitchen;
     private Wrongs globalWrongs;
-    private Map<Ingredient, Integer> Ingredients = new HashMap<>();
+    private List<Pair<Ingredient, Integer>> Ingredients = new ArrayList<>();
     private void getSizePizza() {
         dialog.wish();
         globalWrongs = kitchen.setSizePizza(dialog.suggest(SIZE, null));
@@ -59,7 +59,7 @@ public class Controller implements Controllers<Ingredient> {
 
                 if (globalWrongs == WRONG_NONE || globalWrongs == WRONG_WASHOUT){
                     if(globalWrongs == WRONG_NONE && countIngredientUser != 0){
-                        Ingredients.put(ingredient,countIngredientUser);
+                        Ingredients.add(new Pair(ingredient,countIngredientUser));
                     }
                     break;
                 }
