@@ -3,10 +3,12 @@ package com.simbirsoft.kondratyev.ruslan.pizzeria.configuration;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Exceptions.MakerException;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.repository.Kitchen;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -20,30 +22,23 @@ import java.util.Properties;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = {"com.simbirsoft.kondratyev.ruslan.pizzeria"})
+@PropertySource("classpath:config.properties")
 public class MvcWebConfig implements WebMvcConfigurer {
-    private static String swaggerUIPage = "swagger-ui";
-    private static String swaggerUIResources = "META-INF/resources";
-    private static String swaggerUIWebjars = "webjars";
-    private static String swaggerUIWebjarsResources = "META-INF/resources/webjars";
+    @Value("${swagger-ui}")
+    private String swaggerUIPage;
+    @Value("${META-INF/resources}")
+    private String swaggerUIResources;
+    @Value("${webjars}")
+    private String swaggerUIWebjars;
+    @Value("${META-INF/resources/webjars}")
+    private String swaggerUIWebjarsResources;
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        Properties prop = new Properties();
-        try
-        {
-            System.out.println();
-            InputStream input;
-            input = new FileInputStream("WEB-INF/config.properties");
-            prop.load(input);
+        registry.addResourceHandler(swaggerUIPage)
+                .addResourceLocations(swaggerUIResources);
 
-        }catch(IOException err){
-            MakerException makerException = new MakerException("Can't open property files", err.getCause());
-            throw  makerException;
-        }
-        registry.addResourceHandler(prop.getProperty(swaggerUIPage))
-                .addResourceLocations(prop.getProperty(swaggerUIResources));
-
-        registry.addResourceHandler(prop.getProperty(swaggerUIWebjars))
-                .addResourceLocations(prop.getProperty(swaggerUIWebjarsResources));
+        registry.addResourceHandler(swaggerUIWebjars)
+                .addResourceLocations(swaggerUIWebjarsResources);
 }
     @Bean
     public Kitchen KitchenGenerate() {
