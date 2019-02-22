@@ -3,6 +3,7 @@ package com.simbirsoft.kondratyev.ruslan.pizzeria.repository;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.HibernateUtil;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.Kitchens;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pizza;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Recipe;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Recipes;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
@@ -75,9 +76,9 @@ public class Kitchen implements Kitchens<Ingredient> {
         return WRONG_NONE;
     }
 
-    public Collection<String> getPizza() {
-        List<String> pizza = new ArrayList<>();
-        pizza.add("Размер пиццы: " + sizePizza);
+    public Pizza getPizza() {
+        Pizza pizza = new Pizza();
+        pizza.setSizePizza(sizePizza);
 
         HibernateUtil.openSession();
 
@@ -86,7 +87,7 @@ public class Kitchen implements Kitchens<Ingredient> {
         List<Recipe> recipes = queryType.getResultList();
 
         for(Recipe recipe: recipes){
-            pizza.add(recipe.getIngredients().getName() + " = " + recipe.setCountIngredient());
+            pizza.setIngredient(recipe.setCountIngredient(), recipe.getIngredients());
         }
 
         HibernateUtil.commitSession();

@@ -1,6 +1,7 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.views;
 
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pizza;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.*;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pair;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.repository.Kitchen;
@@ -59,7 +60,7 @@ public class Dialog{
         }
         return answer.toUpperCase().matches("Y");
     }
-    public void issueResult(Collection<String> pizzaDescription){
+    public void issueResult(Pizza pizzaDescription){
         for(int i = 0; i < 10; i++) {
             try {
                 System.out.print(". ");
@@ -69,10 +70,7 @@ public class Dialog{
                 throw new RuntimeException(err.getMessage(), err.getCause());
             }
         }
-        System.out.println("\nВаша пицца готова:");
-        for(String data : pizzaDescription){
-            System.out.println(data);
-        }
+        System.out.println(pizzaDescription);
         System.out.println("Приятного аппетита");
     }
     public boolean repeat(){

@@ -49,7 +49,7 @@ public class StoreController {
         return collection;
     }
     @PutMapping ("/commitStore/")
-    public HttpStatus commitStore(@RequestBody List<Pair<Ingredient,Integer>> ingrediens) {
+    public HttpStatus commitStore(@RequestBody List<Pair<String,Integer>> ingrediens) {
         storeService.commitStore(ingrediens);
         return HttpStatus.OK;
     }

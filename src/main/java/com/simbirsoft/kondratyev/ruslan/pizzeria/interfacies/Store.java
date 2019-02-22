@@ -10,7 +10,7 @@ import java.util.Map;
 
 public interface Store<Ingredient>{
     Wrongs getIngredient(final Ingredient type, final Integer quantity);
-    void commitStore(List<Pair<Ingredient,Integer>> ingrediens);
+    void commitStore(List<Pair<String,Integer>> ingrediens);
     Collection<Ingredient> getAllIngredients();
     Integer getQuantity(final Ingredient type);
 }

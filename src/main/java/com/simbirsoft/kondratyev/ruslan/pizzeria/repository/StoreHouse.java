@@ -55,7 +55,7 @@ public class StoreHouse  implements Store<Ingredient> {
         return listIndredients;
     }
 
-    public void commitStore(List<Pair<Ingredient,Integer>> ingrediens) {
+    public void commitStore(List<Pair<String,Integer>> ingrediens) {
         if(ingrediens.size() == 0){
             return;
         }
@@ -65,13 +65,17 @@ public class StoreHouse  implements Store<Ingredient> {
 
         TypedQuery<Storage> query = HibernateUtil.getSession().createNamedQuery(Storage.getAllStorage, Storage.class);
         listStorage = query.getResultList();
-        Iterator<Storage> iteratorStorage = listStorage.iterator();
-        for(Pair<Ingredient,Integer> pair : ingrediens)
-        {
-            Storage storage = iteratorStorage.next();
-            storage.setCostIngredient(0.0);
-            storage.setTailsIngredient(storage.getTailsIngredient() - pair.getSecond());
-            HibernateUtil.getSession().saveOrUpdate(storage);
+        for(Pair<String, Integer> pair : ingrediens) {
+            for (Storage storage: listStorage) {
+
+                if(storage.getIngredients().getName() != pair.getFirst()){
+                    continue;
+                }
+                storage.setCostIngredient(0.0);
+                storage.setTailsIngredient(storage.getTailsIngredient() - pair.getSecond());
+                HibernateUtil.getSession().saveOrUpdate(storage);
+                break;
+            }
         }
         HibernateUtil.commitSession();
     }
