@@ -6,7 +6,6 @@ import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pair;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Storage;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.views.Dialog;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.TypedQuery;
@@ -22,9 +21,6 @@ public class StoreHouse  implements Store<Ingredient> {
     public Wrongs getIngredient(final Ingredient type, final Integer quantity) {
         if (quantity == 0) {
             return WRONG_NONE;
-        }
-        if (quantity == Dialog.ABORT) {
-            return WRONG_WASHOUT;
         }
         Integer countIngredientDB = getQuantity(type);
         if ((countIngredientDB < quantity) || (countIngredientDB == 0)) {

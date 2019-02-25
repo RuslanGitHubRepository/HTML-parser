@@ -7,7 +7,6 @@ import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pizza;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Recipe;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Recipes;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.views.Dialog;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.TypedQuery;
@@ -33,9 +32,6 @@ public class Kitchen implements Kitchens<Ingredient> {
 
     public Wrongs addToRecipe(Ingredient ingredient, Integer countToAdd) {
 
-        if (countToAdd == Dialog.ABORT){
-            return WRONG_WASHOUT;
-        }
         if (countToAdd > maxPortionIngredient){
             return WRONG_INPUT;
         }
@@ -69,9 +65,6 @@ public class Kitchen implements Kitchens<Ingredient> {
     }
 
     public Wrongs setSizePizza(Integer sizePizza) {
-        if (sizePizza == Dialog.ABORT){
-            return WRONG_WASHOUT;
-        }
         this.sizePizza = sizePizza;
         return WRONG_NONE;
     }

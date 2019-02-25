@@ -22,8 +22,8 @@ public class KithenController {
     @Autowired
     Kitchen kithenService;
 
-    @PutMapping("/replenishmentRecipe/")
-    public  HttpStatus addToRecipe(@RequestParam(value="param", required=true) int countToAdd, @RequestBody Ingredient ingredient) {
+    @PutMapping("/replenishmentRecipe/{countToAdd}")
+    public  HttpStatus addToRecipe(@PathVariable(required=true) int countToAdd, @RequestBody Ingredient ingredient) {
         Wrongs wrong = kithenService.addToRecipe(ingredient, countToAdd);
         if (wrong == WRONG_INPUT) {
             return HttpStatus.CONFLICT;

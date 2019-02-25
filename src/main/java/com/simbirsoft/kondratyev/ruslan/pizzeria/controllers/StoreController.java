@@ -43,12 +43,12 @@ public class StoreController {
         Integer count = storeService.getQuantity(ingredient);
         return count;
     }
-    @GetMapping("/quantityAll/")
+    @GetMapping
     public Collection<Ingredient> getAllIngredients() {
         Collection<Ingredient> collection = storeService.getAllIngredients();
         return collection;
     }
-    @PutMapping ("/commitStore/")
+    @PutMapping
     public HttpStatus commitStore(@RequestBody List<Pair<String,Integer>> ingrediens) {
         storeService.commitStore(ingrediens);
         return HttpStatus.OK;
