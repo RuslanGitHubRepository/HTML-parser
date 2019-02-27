@@ -17,7 +17,7 @@ import java.util.List;
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.WRONG_INPUT;
 
 @RestController
-@RequestMapping("kithen")
+@RequestMapping("/private/kithen")
 public class KithenController {
     @Autowired
     Kitchen kithenService;

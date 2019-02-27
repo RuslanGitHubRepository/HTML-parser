@@ -18,7 +18,7 @@ import java.util.Map;
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.WRONG_NONE;
 
 @RestController
-@RequestMapping("store")
+@RequestMapping("/private/store")
 public class StoreController {
     @Autowired
     StoreHouse storeService;

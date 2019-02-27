@@ -21,16 +21,16 @@ import java.util.Properties;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = {"com.simbirsoft.kondratyev.ruslan.pizzeria"})
 @PropertySource("classpath:config.properties")
+@ComponentScan(basePackages = {"com.simbirsoft.kondratyev.ruslan.pizzeria"})
 public class MvcWebConfig implements WebMvcConfigurer {
     @Value("${swagger-ui}")
     private String swaggerUIPage;
-    @Value("${META-INF/resources}")
+    @Value("${META-INF_resources}")
     private String swaggerUIResources;
     @Value("${webjars}")
     private String swaggerUIWebjars;
-    @Value("${META-INF/resources/webjars}")
+    @Value("${META-INF_resources_webjars}")
     private String swaggerUIWebjarsResources;
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
