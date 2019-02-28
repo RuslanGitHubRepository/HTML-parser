@@ -57,8 +57,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(env.getProperty(publicDir)).permitAll()
                 .antMatchers(env.getProperty(privateDir)).access("hasRole('ROLE_" + env.getProperty(userRole) + "')");
-
-
     }
 
     @Override

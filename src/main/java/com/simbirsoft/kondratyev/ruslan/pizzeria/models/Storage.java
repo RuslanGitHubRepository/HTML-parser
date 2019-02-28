@@ -1,8 +1,11 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.models;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
+@Data
 @Entity
 @NamedQueries(value = {
         @NamedQuery(name = Storage.getAllStoreIngredient, query = "SELECT st.ingredients FROM Storage st WHERE st.tailsIngredient > 0"),
@@ -31,7 +34,11 @@ public class Storage  implements Serializable {
         this.ingredients = ingredients;
     }
 
-    public Integer getTailsIngredient() {
+    protected boolean canEqual(final Object other) {
+        return other instanceof Storage;
+    }
+
+    /* public Integer getTailsIngredient() {
         return tailsIngredient;
     }
 
@@ -53,5 +60,5 @@ public class Storage  implements Serializable {
 
     public void setIngredients(Ingredient ingredients) {
         this.ingredients = ingredients;
-    }
+    }*/
 }

@@ -5,6 +5,7 @@ import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pair;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.repository.StoreHouse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

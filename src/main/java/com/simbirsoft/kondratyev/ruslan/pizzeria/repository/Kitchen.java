@@ -80,7 +80,7 @@ public class Kitchen implements Kitchens<Ingredient> {
         List<Recipe> recipes = queryType.getResultList();
 
         for(Recipe recipe: recipes){
-            pizza.setIngredient(recipe.setCountIngredient(), recipe.getIngredients());
+            pizza.setIngredient(recipe.getCountIngredient(), recipe.getIngredients());
         }
 
         HibernateUtil.commitSession();

@@ -2,6 +2,8 @@ package com.simbirsoft.kondratyev.ruslan.pizzeria.models;
 
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Taste;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Condition;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.*;
@@ -14,6 +16,8 @@ import java.io.Serializable;
 })
 @StaticMetamodel(value = Ingredient.class)
 @Table(name = "ingredients")
+@Getter
+@Setter
 public class Ingredient implements Serializable {
     public static final String getIngredient = "getIngredient";
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +34,7 @@ public class Ingredient implements Serializable {
 
     public Ingredient(){}
 
-    public void setTaste(Taste taste) {
+   /* public void setTaste(Taste taste) {
         this.taste = taste;
     }
     public Taste getTaste() {
@@ -51,13 +55,14 @@ public class Ingredient implements Serializable {
     public String getName() {
         return this.name;
     }
+    public Integer getId() {
+        return id;
+    }*/
 
     @Override
     public String toString(){
         return name + ": " + taste.toString() + ", " + condition.toString();
     }
 
-    public Integer getId() {
-        return id;
-    }
+
 }

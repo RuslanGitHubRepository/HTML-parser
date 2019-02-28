@@ -3,6 +3,7 @@ package com.simbirsoft.kondratyev.ruslan.pizzeria.controllers;
 
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Exceptions.MakerException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AuthenticationManager;
