@@ -1,14 +1,19 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.repository;
 
-import com.simbirsoft.kondratyev.ruslan.pizzeria.HibernateUtil;
+
+import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.KitchenRepository;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.Kitchens;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.StorageRepository;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pizza;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Recipe;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Recipes;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.*;
@@ -16,7 +21,13 @@ import java.util.*;
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.*;
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.WRONG_FORMATION;
 
+@Transactional
 public class Kitchen implements Kitchens<Ingredient> {
+    @PersistenceContext
+    EntityManager em;
+    @Autowired
+    private KitchenRepository kitchenRepository;
+
     private Integer sizePizza = 0;
     public static Integer typeOfPizza = 0;
     private Integer currentPortion = 0;
@@ -41,20 +52,15 @@ public class Kitchen implements Kitchens<Ingredient> {
         if (countToAdd == 0){
             return WRONG_NONE;
         }
-
-        HibernateUtil.openSession();
-
         Recipe recipe = new Recipe();
         recipe.setCountIngredient(countToAdd);
         recipe.setRecipeNumber(new Recipes("recipe #" + Kitchen.typeOfPizza, Kitchen.typeOfPizza));
         recipe.setIngredients(ingredient);
         try {
-            HibernateUtil.getSession().persist(recipe);
-
-            HibernateUtil.commitSession();
+            em.persist(recipe);
         }
         catch(Exception err){
-            HibernateUtil.getSession().close();
+            em.flush();
             return WRONG_INPUT;
         }
         currentPortion += countToAdd;
@@ -72,18 +78,10 @@ public class Kitchen implements Kitchens<Ingredient> {
     public Pizza getPizza() {
         Pizza pizza = new Pizza();
         pizza.setSizePizza(sizePizza);
-
-        HibernateUtil.openSession();
-
-        TypedQuery<Recipe> queryType = HibernateUtil.getSession().createNamedQuery(Recipe.getRecipe, Recipe.class);
-        queryType.setParameter("serialNumber",typeOfPizza);
-        List<Recipe> recipes = queryType.getResultList();
-
+        List<Recipe> recipes = kitchenRepository.findByRecipeNumber_IdEquals(typeOfPizza);
         for(Recipe recipe: recipes){
             pizza.setIngredient(recipe.getCountIngredient(), recipe.getIngredients());
         }
-
-        HibernateUtil.commitSession();
         readinessFlag = true;
         /*typeOfPizza;*/
         return pizza;

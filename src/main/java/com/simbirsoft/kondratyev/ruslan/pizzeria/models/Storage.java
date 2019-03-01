@@ -5,13 +5,14 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Data
+@Getter
+@Setter
 @Entity
-@NamedQueries(value = {
+/*@NamedQueries(value = {
         @NamedQuery(name = Storage.getAllStoreIngredient, query = "SELECT st.ingredients FROM Storage st WHERE st.tailsIngredient > 0"),
         @NamedQuery(name = Storage.getAllStorage, query = "SELECT st FROM Storage st JOIN FETCH st.ingredients WHERE st.tailsIngredient > 0"),
         @NamedQuery(name = Storage.getOneUnit, query = "SELECT st FROM Storage st JOIN FETCH st.ingredients WHERE st.ingredients.name = :name")
-})
+})*/
 @Table(name = "storage")
 public class Storage  implements Serializable {
     public static final String getAllStoreIngredient = "getAllStoreIngredient";
@@ -38,27 +39,4 @@ public class Storage  implements Serializable {
         return other instanceof Storage;
     }
 
-    /* public Integer getTailsIngredient() {
-        return tailsIngredient;
-    }
-
-    public void setTailsIngredient(Integer tailsIngredient) {
-        this.tailsIngredient = tailsIngredient;
-    }
-
-    public Double getCostIngredient() {
-        return costIngredient;
-    }
-
-    public void setCostIngredient(Double costIngredient) {
-        this.costIngredient = costIngredient;
-    }
-
-    public Ingredient getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(Ingredient ingredients) {
-        this.ingredients = ingredients;
-    }*/
 }

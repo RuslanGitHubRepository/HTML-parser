@@ -6,14 +6,14 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
-@NamedQueries(value = {
-        @NamedQuery(name = Recipe.getRecipe, query = "SELECT re FROM Recipe re JOIN FETCH re.ingredients JOIN FETCH re.recipeNumber WHERE re.recipeNumber.id = :serialNumber"),
-        @NamedQuery(name = Recipe.deleteRecipes, query = "DELETE FROM Recipe re WHERE re.recipeNumber.id = :idNumber")
-})
-@Table(name = "recipe")
 @Getter
 @Setter
+@Entity
+/*@NamedQueries(value = {
+        @NamedQuery(name = Recipe.getRecipe, query = "SELECT rc FROM Recipe rc JOIN FETCH rc.ingredients JOIN FETCH rc.recipeNumber WHERE rc.recipeNumber.id = :serialNumber"),
+        @NamedQuery(name = Recipe.deleteRecipes, query = "DELETE FROM Recipe re WHERE re.recipeNumber.id = :idNumber")
+})*/
+@Table(name = "recipe")
 public class Recipe implements Serializable {
     public static final String getRecipe = "getRecipe";
     public static final String deleteRecipes = "deleteRecipes";
@@ -34,27 +34,4 @@ public class Recipe implements Serializable {
         this.recipeNumber = recipeNumber;
     }
 
-/*    public Integer setCountIngredient() {
-        return countIngredient;
-    }
-
-    public void setCountIngredient(Integer countIngredient) {
-        this.countIngredient = countIngredient;
-    }
-
-    public Ingredient getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(Ingredient ingredients) {
-        this.ingredients = ingredients;
-    }
-
-    public Recipes getRecipeNumber() {
-        return recipeNumber;
-    }
-
-    public void setRecipeNumber(Recipes recipeNumber) {
-        this.recipeNumber = recipeNumber;
-    }*/
 }

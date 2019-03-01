@@ -10,14 +10,14 @@ import javax.persistence.*;
 import javax.persistence.metamodel.StaticMetamodel;
 import java.io.Serializable;
 
+@Getter
+@Setter
 @Entity
 @NamedQueries(value = {
         @NamedQuery(name = Ingredient.getIngredient, query = "SELECT ing FROM Ingredient ing  WHERE ing.name = :name"),
 })
 @StaticMetamodel(value = Ingredient.class)
 @Table(name = "ingredients")
-@Getter
-@Setter
 public class Ingredient implements Serializable {
     public static final String getIngredient = "getIngredient";
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,31 +33,6 @@ public class Ingredient implements Serializable {
     private Condition condition;
 
     public Ingredient(){}
-
-   /* public void setTaste(Taste taste) {
-        this.taste = taste;
-    }
-    public Taste getTaste() {
-        return this.taste;
-    }
-
-    public void setCondition(Condition condition) {
-        this.condition = condition;
-    }
-
-    public Condition getCondition() {
-        return this.condition;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getName() {
-        return this.name;
-    }
-    public Integer getId() {
-        return id;
-    }*/
 
     @Override
     public String toString(){
