@@ -24,8 +24,6 @@ import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.*;
 public class StoreHouse  implements Store<Ingredient> {
     @Autowired
     private StorageRepository storageRepository;
-    @PersistenceContext
-    EntityManager em;
 
     public Wrongs getIngredient(final Ingredient type, final Integer quantity) {
         if (quantity == 0) {
@@ -41,10 +39,6 @@ public class StoreHouse  implements Store<Ingredient> {
     public Integer getQuantity(final Ingredient type){
             Integer result = 0;
 
-/*        TypedQuery<Storage> query = em.createNamedQuery(Storage.getOneUnit,Storage.class);
-        query.setParameter("name",type.getName());
-        Storage storage = query.getSingleResult();*/
-
        Optional<Storage> storageOptional = storageRepository.findByIngredients_NameEquals(type.getName());
         if(storageOptional.isPresent()){
             result = storageOptional.get().getTailsIngredient();
@@ -54,9 +48,6 @@ public class StoreHouse  implements Store<Ingredient> {
 
     public Collection<Ingredient> getAllIngredients() {
         Collection<Ingredient> listIndredients = new ArrayList<>();
-
-        /*TypedQuery<Ingredient> query = em.createNamedQuery(Storage.getAllStoreIngredient, Ingredient.class);
-        listIndredients = query.getResultList();*/
 
         List<Storage> storageList = storageRepository.findByTailsIngredientGreaterThan(0);
 
@@ -71,11 +62,7 @@ public class StoreHouse  implements Store<Ingredient> {
         if(ingrediens.size() == 0){
             return;
         }
-        List<Storage> storageList = new ArrayList<>();
-
-
-        /*TypedQuery<Storage> query = em.createNamedQuery(Storage.getAllStorage, Storage.class);
-        listStorage = query.getResultList();*/
+        List<Storage> storageList;
 
         storageList = storageRepository.findByTailsIngredientGreaterThan(0);
 
@@ -87,7 +74,7 @@ public class StoreHouse  implements Store<Ingredient> {
                 }
                 storage.setCostIngredient(0.0);
                 storage.setTailsIngredient(storage.getTailsIngredient() - pair.getSecond());
-                em.persist(storage);
+                storageRepository.save(storage);
                 break;
             }
         }

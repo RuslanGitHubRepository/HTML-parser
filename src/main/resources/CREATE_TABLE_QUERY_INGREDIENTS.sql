@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS ingredients;
-CREATE TABLE IF NOT EXISTS ingredients (id INTEGER NOT NULL AUTO_INCREMENT, conditions VARCHAR(30), name  VARCHAR(30), taste  VARCHAR(30), PRIMARY KEY (id));
+CREATE TABLE IF NOT EXISTS ingredients (id BIGINT NOT NULL AUTO_INCREMENT, conditions VARCHAR(30), name  VARCHAR(30), taste  VARCHAR(30), PRIMARY KEY (id));
 INSERT INTO ingredients(conditions, name, taste) VALUES ('FRESH','Сыр', 'SALTY');
 INSERT INTO ingredients(conditions, name, taste) VALUES ('FRESH','Лук', 'BITTER');
 INSERT INTO ingredients(conditions, name, taste) VALUES ('FRESH','Грибы', 'BLAND');

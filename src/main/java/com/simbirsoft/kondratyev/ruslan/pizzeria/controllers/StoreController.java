@@ -1,5 +1,6 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.controllers;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pair;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
@@ -11,10 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.WRONG_NONE;
 
@@ -45,8 +43,9 @@ public class StoreController {
         return count;
     }
     @GetMapping
-    public Collection<Ingredient> getAllIngredients() {
-        Collection<Ingredient> collection = storeService.getAllIngredients();
+    public ArrayList<Ingredient> getAllIngredients() {
+        ArrayList<Ingredient> collection = new ArrayList<>();
+        collection.addAll(storeService.getAllIngredients());
         return collection;
     }
     @PutMapping

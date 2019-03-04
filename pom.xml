@@ -193,6 +193,17 @@
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>${maven-javadoc-plugin.version}</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>exec-maven-plugin</artifactId>
+                    <configuration>
+                        <mainClass>com.simbirsoft.kondratyev.ruslan.Application</mainClass>
+                        <arguments>
+                            <argument>-Dproperty=first</argument>
+                            <argument>-Dproperty=second</argument>
+                        </arguments>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>

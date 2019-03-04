@@ -23,13 +23,12 @@ import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.WRON
 
 @Transactional
 public class Kitchen implements Kitchens<Ingredient> {
-    @PersistenceContext
-    EntityManager em;
+
     @Autowired
     private KitchenRepository kitchenRepository;
 
     private Integer sizePizza = 0;
-    public static Integer typeOfPizza = 0;
+    public static Long typeOfPizza = 0L;
     private Integer currentPortion = 0;
     public static boolean readinessFlag = false;
     public static Integer maxPortionPizza = 0;
@@ -38,7 +37,7 @@ public class Kitchen implements Kitchens<Ingredient> {
     public Kitchen(final Integer maxIngredient, final Integer maxPizza) {
         maxPortionIngredient = maxIngredient;
         maxPortionPizza = maxPizza;
-        typeOfPizza = 1;
+        typeOfPizza = 1L;
     }
 
     public Wrongs addToRecipe(Ingredient ingredient, Integer countToAdd) {
@@ -56,13 +55,9 @@ public class Kitchen implements Kitchens<Ingredient> {
         recipe.setCountIngredient(countToAdd);
         recipe.setRecipeNumber(new Recipes("recipe #" + Kitchen.typeOfPizza, Kitchen.typeOfPizza));
         recipe.setIngredients(ingredient);
-        try {
-            em.persist(recipe);
-        }
-        catch(Exception err){
-            em.flush();
-            return WRONG_INPUT;
-        }
+
+        kitchenRepository.save(recipe);
+
         currentPortion += countToAdd;
         if (currentPortion.equals(maxPortionPizza)){
             readinessFlag = true;
@@ -80,7 +75,7 @@ public class Kitchen implements Kitchens<Ingredient> {
         pizza.setSizePizza(sizePizza);
         List<Recipe> recipes = kitchenRepository.findByRecipeNumber_IdEquals(typeOfPizza);
         for(Recipe recipe: recipes){
-            pizza.setIngredient(recipe.getCountIngredient(), recipe.getIngredients());
+            pizza.insertIngredient(recipe.getCountIngredient(), recipe.getIngredients());
         }
         readinessFlag = true;
         /*typeOfPizza;*/

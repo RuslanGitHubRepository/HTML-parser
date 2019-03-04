@@ -11,11 +11,11 @@ import javax.persistence.*;
 @Table(name = "recipes")
 public class Recipes {
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    Long id;
     private String nameRecipes;
 
     public Recipes(){}
-    public Recipes(String nameRecipes, Integer id){
+    public Recipes(String nameRecipes, Long id){
         this.nameRecipes = nameRecipes;
         this.id = id;
     }

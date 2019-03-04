@@ -1,6 +1,7 @@
 package com.simbirsoft.kondratyev.ruslan;
 
 
+import lombok.NoArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;

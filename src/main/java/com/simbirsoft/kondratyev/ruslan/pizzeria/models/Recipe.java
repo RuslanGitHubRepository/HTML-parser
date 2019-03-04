@@ -19,7 +19,7 @@ public class Recipe implements Serializable {
     public static final String deleteRecipes = "deleteRecipes";
     /*public static final String insertUnit = "insertUnit";*/
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
     private Ingredient ingredients;

@@ -14,13 +14,14 @@ import java.io.Serializable;
         @NamedQuery(name = Storage.getOneUnit, query = "SELECT st FROM Storage st JOIN FETCH st.ingredients WHERE st.ingredients.name = :name")
 })*/
 @Table(name = "storage")
+//@NoArgsConstructor
 public class Storage  implements Serializable {
     public static final String getAllStoreIngredient = "getAllStoreIngredient";
     public static final String getAllStorage = "getAllStorage";
     public static final String getOneUnit = "getOneUnit";
     public static final String updateUnit = "updateUnit";
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @OneToOne(fetch = FetchType.LAZY)
     private Ingredient ingredients;
     @Column(name = "tails")
@@ -28,7 +29,7 @@ public class Storage  implements Serializable {
     @Column(name = "cost")
     private Double costIngredient;
 
-    public Storage(){}
+public Storage(){}
     public Storage(Integer tailsIngredient, Double costIngredient,Ingredient ingredients){
         this.tailsIngredient = tailsIngredient;
         this.costIngredient = costIngredient;

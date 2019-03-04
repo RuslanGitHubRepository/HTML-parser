@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS storage;
-CREATE TABLE IF NOT EXISTS storage (id MEDIUMINT NOT NULL AUTO_INCREMENT, cost DOUBLE NOT NULL, tails INTEGER NOT NULL,ingredients_id INTEGER, PRIMARY KEY (id),FOREIGN KEY (ingredients_id) REFERENCES ingredients(id));
+CREATE TABLE IF NOT EXISTS storage (id BIGINT NOT NULL AUTO_INCREMENT, cost DOUBLE NOT NULL, tails INTEGER NOT NULL,ingredients_id BIGINT, PRIMARY KEY (id),FOREIGN KEY (ingredients_id) REFERENCES ingredients(id));
 INSERT INTO storage(cost, tails, ingredients_id) VALUES (0.0, 20, 1);
 INSERT INTO storage(cost, tails, ingredients_id) VALUES (0.0, 20, 2);
 INSERT INTO storage(cost, tails, ingredients_id) VALUES (0.0, 20, 3);

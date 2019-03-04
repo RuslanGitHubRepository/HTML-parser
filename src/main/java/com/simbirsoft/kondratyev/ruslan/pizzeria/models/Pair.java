@@ -1,10 +1,14 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.models;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.Serializable;
 @Service
+@Setter
+@Getter
 @Transactional
 public class Pair<A, B> implements Serializable {
     private A first;
@@ -42,21 +46,5 @@ public class Pair<A, B> implements Serializable {
     public String toString()
     {
         return first + "(" + second + ")";
-    }
-
-    public A getFirst() {
-        return first;
-    }
-
-    public void setFirst(A first) {
-        this.first = first;
-    }
-
-    public B getSecond() {
-        return second;
-    }
-
-    public void setSecond(B second) {
-        this.second = second;
     }
 }

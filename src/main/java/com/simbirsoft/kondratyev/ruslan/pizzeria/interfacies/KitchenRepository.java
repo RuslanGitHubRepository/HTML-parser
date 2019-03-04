@@ -9,6 +9,6 @@ import java.util.List;
 
 @Repository
 public interface KitchenRepository extends JpaRepository<Recipe, Long> {
-    List<Recipe> findByRecipeNumber_IdEquals(Integer id);
-    void deleteRecipeByRecipeNumber_IdEquals(Integer id);
+    List<Recipe> findByRecipeNumber_IdEquals(Long id);
+    void deleteRecipeByRecipeNumber_IdEquals(Long id);
 }
