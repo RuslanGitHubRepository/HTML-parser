@@ -16,10 +16,11 @@ import java.io.Serializable;
 @Table(name = "storage")
 //@NoArgsConstructor
 public class Storage  implements Serializable {
-    public static final String getAllStoreIngredient = "getAllStoreIngredient";
+    /*public static final String getAllStoreIngredient = "getAllStoreIngredient";
     public static final String getAllStorage = "getAllStorage";
     public static final String getOneUnit = "getOneUnit";
     public static final String updateUnit = "updateUnit";
+    */
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @OneToOne(fetch = FetchType.LAZY)

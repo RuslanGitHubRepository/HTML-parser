@@ -1,6 +1,7 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.repository;
 
 
+import com.simbirsoft.kondratyev.ruslan.Application;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.StorageRepository;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.Store;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
@@ -15,7 +16,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
+import java.lang.reflect.Method;
 import java.util.*;
+import java.util.logging.Logger;
 
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.*;
 
@@ -24,6 +27,13 @@ import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.*;
 public class StoreHouse  implements Store<Ingredient> {
     @Autowired
     private StorageRepository storageRepository;
+    @Autowired
+    private Logger log;
+
+    private final String getQuantity = "StorageRepository.getQuantity ";
+    private final String getIngredient = "StorageRepository.getIngredient ";
+    private final String getAllIngredients = "StorageRepository.getAllIngredients ";
+    private final String commitStore = "StorageRepository.commitStore ";
 
     public Wrongs getIngredient(final Ingredient type, final Integer quantity) {
         if (quantity == 0) {
@@ -33,6 +43,7 @@ public class StoreHouse  implements Store<Ingredient> {
         if ((countIngredientDB < quantity) || (countIngredientDB == 0)) {
             return WRONG_INPUT;
         }
+        log.info(getIngredient + Calendar.getInstance().toString());
         return WRONG_NONE;
     }
 
@@ -43,6 +54,7 @@ public class StoreHouse  implements Store<Ingredient> {
         if(storageOptional.isPresent()){
             result = storageOptional.get().getTailsIngredient();
         }
+        log.info("\n"+getQuantity + Calendar.getInstance().toString());
        return result;
     }
 
@@ -54,7 +66,7 @@ public class StoreHouse  implements Store<Ingredient> {
         for(Storage storage:storageList){
             listIndredients.add(storage.getIngredients());
         }
-
+        log.info(getAllIngredients + Calendar.getInstance().toString());
         return listIndredients;
     }
 
@@ -78,6 +90,8 @@ public class StoreHouse  implements Store<Ingredient> {
                 break;
             }
         }
-
+        log.info(commitStore + Calendar.getInstance().toString());
     }
+
+
 }

@@ -17,6 +17,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.logging.Logger;
 
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.*;
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.WRONG_FORMATION;
@@ -26,6 +27,13 @@ public class Kitchen implements Kitchens<Ingredient> {
 
     @Autowired
     private KitchenRepository kitchenRepository;
+    @Autowired
+    private Logger log;
+
+    private final String addToRecipe = "KitchenRepository.addToRecipe ";
+    private final String setSizePizza = "KitchenRepository.setSizePizza ";
+    private final String getPizza = "KitchenRepository.getPizza ";
+    private final String restartKitchen = "KitchenRepository.restartKitchen ";
 
     private Integer sizePizza = 0;
     public static Long typeOfPizza = 0L;
@@ -41,6 +49,8 @@ public class Kitchen implements Kitchens<Ingredient> {
     }
 
     public Wrongs addToRecipe(Ingredient ingredient, Integer countToAdd) {
+
+        log.info(addToRecipe + Calendar.getInstance().toString());
 
         if (countToAdd > maxPortionIngredient){
             return WRONG_INPUT;
@@ -66,11 +76,17 @@ public class Kitchen implements Kitchens<Ingredient> {
     }
 
     public Wrongs setSizePizza(Integer sizePizza) {
+
+        log.info(setSizePizza + Calendar.getInstance().toString());
+
         this.sizePizza = sizePizza;
         return WRONG_NONE;
     }
 
     public Pizza getPizza() {
+
+        log.info(getPizza + Calendar.getInstance().toString());
+
         Pizza pizza = new Pizza();
         pizza.setSizePizza(sizePizza);
         List<Recipe> recipes = kitchenRepository.findByRecipeNumber_IdEquals(typeOfPizza);
@@ -83,6 +99,9 @@ public class Kitchen implements Kitchens<Ingredient> {
     }
 
     public void restartKitchen() {
+
+        log.info(restartKitchen + Calendar.getInstance().toString());
+
         sizePizza = 0;
         currentPortion = 0;
         readinessFlag = false;

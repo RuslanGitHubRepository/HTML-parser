@@ -18,6 +18,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 @Configuration
 @EnableWebMvc
@@ -44,4 +45,6 @@ public class MvcWebConfig implements WebMvcConfigurer {
     public Kitchen KitchenGenerate() {
          return new Kitchen(2, 10);
     }
+    @Bean
+    public Logger LoggerGenerate() {return Logger.getLogger("PizzaMakerLogger");}
 }
