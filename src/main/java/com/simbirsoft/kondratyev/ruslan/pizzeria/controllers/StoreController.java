@@ -28,13 +28,9 @@ public class StoreController {
     @Autowired
     StoreHouse storeService;
 
-    @Autowired
-    private Logger log;
 
     @GetMapping("/isFit/{ingredientName}")
     public HttpStatus getIngredient(@PathVariable String ingredientName, @RequestParam int quantity) {
-
-        log.info(getIngredient + Calendar.getInstance().toString());
 
         Ingredient ingredient = new Ingredient();
         ingredient.setName(ingredientName);
@@ -48,7 +44,6 @@ public class StoreController {
 
     @GetMapping("/quantity/{ingredientName}")
     public Integer getQuantity(@PathVariable String ingredientName) {
-        log.info(getQuantity + Calendar.getInstance().toString());
         Ingredient ingredient = new Ingredient();
         ingredient.setName(ingredientName);
         Integer count = storeService.getQuantity(ingredient);
@@ -56,14 +51,12 @@ public class StoreController {
     }
     @GetMapping
     public ArrayList<Ingredient> getAllIngredients() {
-        log.info(getAllIngredients + Calendar.getInstance().toString());
         ArrayList<Ingredient> collection = new ArrayList<>();
         collection.addAll(storeService.getAllIngredients());
         return collection;
     }
     @PutMapping
     public HttpStatus commitStore(@RequestBody List<Pair<String,Integer>> ingrediens) {
-        log.info(commitStore + Calendar.getInstance().toString());
         storeService.commitStore(ingrediens);
         return HttpStatus.OK;
     }

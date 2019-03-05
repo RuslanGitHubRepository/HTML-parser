@@ -23,13 +23,13 @@ public class Application  extends SpringBootServletInitializer {
         return application.sources(Application.class);
     }
     public static void main(String[] args){
-        SpringApplication.run(Application.class,args);
-    try {
+   try {
             LogManager
                     .getLogManager()
                     .readConfiguration(Application.class.getResourceAsStream("/logging.properties"));
         } catch (IOException ex) {
             System.err.println("Could not setup logger configuration: " + ex.toString());
         }
+        SpringApplication.run(Application.class,args);
     }
 }

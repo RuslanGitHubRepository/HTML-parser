@@ -1,24 +1,18 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.configuration;
 
-import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Exceptions.MakerException;
+
 import com.simbirsoft.kondratyev.ruslan.pizzeria.repository.Kitchen;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
+
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-import java.util.logging.Logger;
 
 @Configuration
 @EnableWebMvc
@@ -45,6 +39,4 @@ public class MvcWebConfig implements WebMvcConfigurer {
     public Kitchen KitchenGenerate() {
          return new Kitchen(2, 10);
     }
-    @Bean
-    public Logger LoggerGenerate() {return Logger.getLogger("PizzaMakerLogger");}
 }

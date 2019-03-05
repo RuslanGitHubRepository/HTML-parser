@@ -27,13 +27,9 @@ public class KithenController {
 
     @Autowired
     Kitchen kithenService;
-    @Autowired
-    private Logger log;
 
     @PutMapping("/replenishmentRecipe/{countToAdd}")
     public  HttpStatus addToRecipe(@PathVariable(required=true) int countToAdd, @RequestBody Ingredient ingredient) {
-
-        log.info(addToRecipe + Calendar.getInstance().toString());
 
         Wrongs wrong = kithenService.addToRecipe(ingredient, countToAdd);
         if (wrong == WRONG_INPUT) {
@@ -43,7 +39,6 @@ public class KithenController {
     }
     @GetMapping(value = "/readyRecipe/")
     public Pizza readyRecipe() {
-        log.info(readyRecipe + Calendar.getInstance().toString());
         return kithenService.getPizza();
     }
 }
