@@ -1,23 +1,17 @@
-package com.simbirsoft.kondratyev.ruslan.pizzeria.repository;
+package com.simbirsoft.kondratyev.ruslan.pizzeria.service.impl;
 
 
-import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.KitchenRepository;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.Kitchens;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.StorageRepository;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.repository.KitchenRepository;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pizza;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Recipe;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Recipes;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.service.Kitchens;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.*;
-import java.util.logging.Logger;
 
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.*;
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.WRONG_FORMATION;
@@ -27,11 +21,6 @@ public class Kitchen implements Kitchens<Ingredient> {
 
     @Autowired
     private KitchenRepository kitchenRepository;
-
-    private final String addToRecipe = "KitchenRepository.addToRecipe ";
-    private final String setSizePizza = "KitchenRepository.setSizePizza ";
-    private final String getPizza = "KitchenRepository.getPizza ";
-    private final String restartKitchen = "KitchenRepository.restartKitchen ";
 
     private Integer sizePizza = 0;
     public static Long typeOfPizza = 0L;
@@ -59,7 +48,7 @@ public class Kitchen implements Kitchens<Ingredient> {
         }
         Recipe recipe = new Recipe();
         recipe.setCountIngredient(countToAdd);
-        recipe.setRecipeNumber(new Recipes("recipe #" + Kitchen.typeOfPizza, Kitchen.typeOfPizza));
+        recipe.setRecipeNumber(new Recipes(Kitchen.typeOfPizza, "recipe #" + Kitchen.typeOfPizza));
         recipe.setIngredients(ingredient);
 
         kitchenRepository.save(recipe);
@@ -68,12 +57,6 @@ public class Kitchen implements Kitchens<Ingredient> {
         if (currentPortion.equals(maxPortionPizza)){
             readinessFlag = true;
         }
-        return WRONG_NONE;
-    }
-
-    public Wrongs setSizePizza(Integer sizePizza) {
-
-        this.sizePizza = sizePizza;
         return WRONG_NONE;
     }
 
@@ -86,14 +69,6 @@ public class Kitchen implements Kitchens<Ingredient> {
             pizza.insertIngredient(recipe.getCountIngredient(), recipe.getIngredients());
         }
         readinessFlag = true;
-        /*typeOfPizza;*/
         return pizza;
-    }
-
-    public void restartKitchen() {
-
-        sizePizza = 0;
-        currentPortion = 0;
-        readinessFlag = false;
     }
 }

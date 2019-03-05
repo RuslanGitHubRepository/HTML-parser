@@ -1,4 +1,4 @@
-package com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies;
+package com.simbirsoft.kondratyev.ruslan.pizzeria.repository;
 
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Recipe;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,5 +10,4 @@ import java.util.List;
 @Repository
 public interface KitchenRepository extends JpaRepository<Recipe, Long> {
     List<Recipe> findByRecipeNumber_IdEquals(Long id);
-    void deleteRecipeByRecipeNumber_IdEquals(Long id);
 }

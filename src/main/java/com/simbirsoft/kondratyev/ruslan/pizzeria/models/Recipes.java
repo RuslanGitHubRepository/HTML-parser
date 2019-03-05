@@ -1,23 +1,19 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.models;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "recipes")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Recipes {
-    @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String nameRecipes;
 
-    public Recipes(){}
-    public Recipes(String nameRecipes, Long id){
-        this.nameRecipes = nameRecipes;
-        this.id = id;
-    }
 }
 

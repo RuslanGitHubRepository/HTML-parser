@@ -1,5 +1,6 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.aspects;
 
+import lombok.extern.java.Log;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -8,15 +9,17 @@ import org.aspectj.lang.annotation.Pointcut;
 import java.util.logging.Logger;
 
 @Aspect
+
 public class WebServiceLogger {
-    private final Logger logger = Logger.getLogger("PizzaMakerLogger");
+
+    private final static Logger LOGGER = Logger.getLogger(WebServiceLogger.class.getName());
 
     /**
      * Pointcut that matches all repositories, services and Web REST endpoints.
      */
-    @Pointcut("within(com.simbirsoft.kondratyev.ruslan.pizzeria.repository..*)"  +
-                " || within(com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pizza)" +
-                " || within(com.simbirsoft.kondratyev.ruslan.pizzeria.controllers..*)")
+    @Pointcut("within(com.simbirsoft.kondratyev.ruslan.pizzeria.service..*)"  +
+              " || within(com.simbirsoft.kondratyev.ruslan.pizzeria.controllers..*)"+
+              " || within(com.simbirsoft.kondratyev.ruslan.pizzeria.repository..*)")
     public void springBeanPointcut() {
         // Method is empty as this is just a Pointcut, the implementations are in the advices.
     }
@@ -26,6 +29,6 @@ public class WebServiceLogger {
 
         String methodName = thisJoinPoint.getSignature().getName();
 
-        logger.info("Call method " + methodName + " with result " + result);
+        LOGGER.info("Call method " + methodName + " with result " + result);
     }
 }

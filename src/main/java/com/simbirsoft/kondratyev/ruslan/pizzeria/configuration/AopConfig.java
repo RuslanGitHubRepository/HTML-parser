@@ -9,8 +9,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableAspectJAutoProxy
 @Configuration
 public class AopConfig {
-    final static String activeProfile = "active_profile";
-
     @Bean
     @Profile("dev")
     public WebServiceLogger WebServiceLoggerBean(){

@@ -1,4 +1,4 @@
-package com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies;
+package com.simbirsoft.kondratyev.ruslan.pizzeria.service;
 
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pair;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
@@ -11,6 +11,6 @@ import java.util.Map;
 public interface Store<Ingredient>{
     Wrongs getIngredient(final Ingredient type, final Integer quantity);
     void commitStore(List<Pair<String,Integer>> ingrediens);
-    Collection<Ingredient> getAllIngredients();
+    List<Ingredient> getAllIngredients();
     Integer getQuantity(final Ingredient type);
 }

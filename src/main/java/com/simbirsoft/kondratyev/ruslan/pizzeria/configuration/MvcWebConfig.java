@@ -1,7 +1,7 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.configuration;
 
 
-import com.simbirsoft.kondratyev.ruslan.pizzeria.repository.Kitchen;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.service.impl.Kitchen;
 
 import org.springframework.beans.factory.annotation.Value;
 

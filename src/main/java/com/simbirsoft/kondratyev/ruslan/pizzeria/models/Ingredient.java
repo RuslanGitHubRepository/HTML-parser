@@ -2,6 +2,7 @@ package com.simbirsoft.kondratyev.ruslan.pizzeria.models;
 
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Taste;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Condition;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,11 +12,9 @@ import javax.persistence.*;
 import javax.persistence.metamodel.StaticMetamodel;
 import java.io.Serializable;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "ingredients")
-//@NoArgsConstructor
+@Data
 public class Ingredient implements Serializable {
     public static final String getIngredient = "getIngredient";
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,9 +28,5 @@ public class Ingredient implements Serializable {
     @Enumerated(value = EnumType.STRING)
     @Column(name = "conditions", length =30)
     private Condition condition;
-    public Ingredient(){}
-    @Override
-    public String toString(){
-        return name + ": " + taste.toString() + ", " + condition.toString();
-    }
+
 }

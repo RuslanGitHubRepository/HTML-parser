@@ -1,16 +1,16 @@
-package com.simbirsoft.kondratyev.ruslan.pizzeria.repository;
+package com.simbirsoft.kondratyev.ruslan.pizzeria.service.impl;
 
 
-import com.simbirsoft.kondratyev.ruslan.Application;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.StorageRepository;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.interfacies.Store;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Exceptions.MakerException;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.repository.StorageRepository;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pair;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Storage;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.service.Store;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+import org.testcontainers.shaded.io.netty.util.internal.ObjectUtil;
 
 
 import javax.transaction.Transactional;
@@ -24,11 +24,6 @@ import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.*;
 public class StoreHouse  implements Store<Ingredient> {
     @Autowired
     private StorageRepository storageRepository;
-
-    private final String getQuantity = "StorageRepository.getQuantity ";
-    private final String getIngredient = "StorageRepository.getIngredient ";
-    private final String getAllIngredients = "StorageRepository.getAllIngredients ";
-    private final String commitStore = "StorageRepository.commitStore ";
 
     public Wrongs getIngredient(final Ingredient type, final Integer quantity) {
         if (quantity == 0) {
@@ -51,14 +46,15 @@ public class StoreHouse  implements Store<Ingredient> {
        return result;
     }
 
-    public Collection<Ingredient> getAllIngredients() {
-        Collection<Ingredient> listIndredients = new ArrayList<>();
+    public List<Ingredient> getAllIngredients() {
+        List<Ingredient> listIndredients = new ArrayList<>();
 
         List<Storage> storageList = storageRepository.findByTailsIngredientGreaterThan(0);
 
         for(Storage storage:storageList){
             listIndredients.add(storage.getIngredients());
         }
+
         return listIndredients;
     }
 
@@ -66,15 +62,14 @@ public class StoreHouse  implements Store<Ingredient> {
         if(ingrediens.size() == 0){
             return;
         }
-        List<Storage> storageList;
 
-        storageList = storageRepository.findByTailsIngredientGreaterThan(0);
+        List<Storage> storageList = storageRepository.findByTailsIngredientGreaterThan(0);
 
         for(Pair<String, Integer> pair : ingrediens) {
             for (Storage storage: storageList) {
 
-                if(storage.getIngredients().getName() != pair.getFirst()){
-                    continue;
+                if(ObjectUtils.nullSafeEquals(storage.getIngredients().getName(), pair.getFirst())){
+                   continue;
                 }
                 storage.setCostIngredient(0.0);
                 storage.setTailsIngredient(storage.getTailsIngredient() - pair.getSecond());

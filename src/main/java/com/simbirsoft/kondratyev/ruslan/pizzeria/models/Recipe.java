@@ -1,6 +1,7 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.models;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import java.io.Serializable;
         @NamedQuery(name = Recipe.getRecipe, query = "SELECT rc FROM Recipe rc JOIN FETCH rc.ingredients JOIN FETCH rc.recipeNumber WHERE rc.recipeNumber.id = :serialNumber"),
         @NamedQuery(name = Recipe.deleteRecipes, query = "DELETE FROM Recipe re WHERE re.recipeNumber.id = :idNumber")
 })*/
+@NoArgsConstructor
 @Table(name = "recipe")
 public class Recipe implements Serializable {
     public static final String getRecipe = "getRecipe";
@@ -29,7 +31,6 @@ public class Recipe implements Serializable {
 
     private Integer countIngredient;
 
-    public Recipe(){}
     public Recipe(Recipes recipeNumber){
         this.recipeNumber = recipeNumber;
     }

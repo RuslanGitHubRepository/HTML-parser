@@ -1,12 +1,9 @@
-package com.simbirsoft.kondratyev.ruslan.pizzeria.controllers;
+package com.simbirsoft.kondratyev.ruslan.pizzeria.controllers.exception;
 
-import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Exceptions.MakerException;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.models.ResponseMsg;
-import io.swagger.models.Response;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.dto.ResponseMsg;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
