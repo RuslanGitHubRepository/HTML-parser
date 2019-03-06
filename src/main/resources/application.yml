@@ -17,3 +17,7 @@ spring:
   jackson:
     serialization:
       fail-on-empty-beans: false
+properties:
+  kithen:
+    maxingredient: 2
+    maxPizza: 10

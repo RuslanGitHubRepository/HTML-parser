@@ -4,7 +4,6 @@ package com.simbirsoft.kondratyev.ruslan.pizzeria.configuration;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.service.impl.Kitchen;
 
 import org.springframework.beans.factory.annotation.Value;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 
 @Configuration
 @EnableWebMvc
-@PropertySource("classpath:config.properties")
+@PropertySource({"classpath:config.properties", "classpath:application.yml"})
 @ComponentScan(basePackages = {"com.simbirsoft.kondratyev.ruslan.pizzeria"})
 public class MvcWebConfig implements WebMvcConfigurer {
     @Value("${swagger-ui}")
@@ -27,6 +26,10 @@ public class MvcWebConfig implements WebMvcConfigurer {
     private String swaggerUIWebjars;
     @Value("${META-INF_resources_webjars}")
     private String swaggerUIWebjarsResources;
+    @Value("${maxingredient}")
+    private Integer maxingredient;
+    @Value("${maxPizza}")
+    private Integer maxPizza;
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler(swaggerUIPage)
@@ -37,6 +40,6 @@ public class MvcWebConfig implements WebMvcConfigurer {
 }
     @Bean
     public Kitchen KitchenGenerate() {
-         return new Kitchen(2, 10);
+         return new Kitchen(maxingredient, maxPizza);
     }
 }

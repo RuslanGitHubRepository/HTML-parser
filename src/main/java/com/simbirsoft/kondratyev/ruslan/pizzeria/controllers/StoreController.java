@@ -1,5 +1,6 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.controllers;
 
+import com.simbirsoft.kondratyev.ruslan.pizzeria.dto.IngredientDto;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pair;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
@@ -41,10 +42,10 @@ public class StoreController {
     }
 
     @GetMapping
-    public Ingredient getAllIngredients() {
-        List<Ingredient> collection = new ArrayList<>();
+    public List<IngredientDto> getAllIngredients() {
+        List<IngredientDto> collection = new ArrayList<>();
         collection.addAll(storeService.getAllIngredients());
-        return collection.get(0);
+        return collection;
     }
 
     @PutMapping

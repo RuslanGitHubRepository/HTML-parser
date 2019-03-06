@@ -1,16 +1,18 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.service.impl;
 
 
+import com.simbirsoft.kondratyev.ruslan.pizzeria.dto.IngredientDto;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.dto.IngredientMapper;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.repository.StorageRepository;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pair;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Storage;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.service.Store;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.testcontainers.shaded.io.netty.util.internal.ObjectUtil;
 
 
 import javax.transaction.Transactional;
@@ -24,6 +26,8 @@ import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.*;
 public class StoreHouse  implements Store<Ingredient> {
     @Autowired
     private StorageRepository storageRepository;
+    @Autowired
+    private IngredientMapper ingredientMapper;
 
     public Wrongs getIngredient(final Ingredient type, final Integer quantity) {
         if (quantity == 0) {
@@ -46,13 +50,14 @@ public class StoreHouse  implements Store<Ingredient> {
        return result;
     }
 
-    public List<Ingredient> getAllIngredients() {
-        List<Ingredient> listIndredients = new ArrayList<>();
+    public List<IngredientDto> getAllIngredients() {
+        List<IngredientDto> listIndredients = new ArrayList<>();
 
         List<Storage> storageList = storageRepository.findByTailsIngredientGreaterThan(0);
 
         for(Storage storage:storageList){
-            listIndredients.add(storage.getIngredients());
+            //listIndredients.add((Ingredient)Hibernate.unproxy(storage.getIngredients()));
+            listIndredients.add(ingredientMapper.IngredientToIngredientDto(storage.getIngredients()));
         }
 
         return listIndredients;

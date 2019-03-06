@@ -1,7 +1,7 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.controllers;
 
 
-import com.simbirsoft.kondratyev.ruslan.pizzeria.dto.AuthorizationDataDTO;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.dto.AuthorizationDataDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,7 +18,7 @@ public class SecurityController {
     private AuthenticationManager am;
 
     @PostMapping
-     public HttpStatus authorization(@RequestBody AuthorizationDataDTO data) {
+     public HttpStatus authorization(@RequestBody AuthorizationDataDto data) {
         try {
             Authentication request = new UsernamePasswordAuthenticationToken(data.getLogin(), data.getPassword());
             Authentication result = am.authenticate(request);
