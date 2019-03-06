@@ -1,5 +1,7 @@
-package com.simbirsoft.kondratyev.ruslan.pizzeria.models;
+package com.simbirsoft.kondratyev.ruslan.pizzeria.dto;
 
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pair;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +14,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @Setter
-public class Pizza implements Serializable {
-    private List<Pair<Integer,Ingredient>> ingredients = new ArrayList<>();
+public class PizzaDto implements Serializable {
+    private List<Pair<Integer, Ingredient>> ingredients = new ArrayList<>();
     private Integer sizePizza = 0;
     private final String insertIngredient = "Pizza.insertIngredient ";
 

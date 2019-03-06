@@ -56,7 +56,6 @@ public class StoreHouse  implements Store<Ingredient> {
         List<Storage> storageList = storageRepository.findByTailsIngredientGreaterThan(0);
 
         for(Storage storage:storageList){
-            //listIndredients.add((Ingredient)Hibernate.unproxy(storage.getIngredients()));
             listIndredients.add(ingredientMapper.IngredientToIngredientDto(storage.getIngredients()));
         }
 

@@ -1,7 +1,8 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.controllers;
 
+import com.simbirsoft.kondratyev.ruslan.pizzeria.dto.IngredientDto;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.dto.PizzaDto;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pizza;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.service.impl.Kitchen;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,8 @@ public class KithenController {
     private Kitchen kithenService;
 
     @PutMapping("/replenishmentRecipe/{countToAdd}")
-    public  HttpStatus addToRecipe(@PathVariable(required=true) int countToAdd, @RequestBody Ingredient ingredient) {
-        Wrongs wrong = kithenService.addToRecipe(ingredient, countToAdd);
+    public  HttpStatus addToRecipe(@PathVariable(required=true) int countToAdd, @RequestBody IngredientDto ingredientDto) {
+        Wrongs wrong = kithenService.addToRecipe(ingredientDto, countToAdd);
         if (wrong == WRONG_INPUT) {
             return HttpStatus.CONFLICT;
         }
@@ -27,7 +28,7 @@ public class KithenController {
     }
 
     @GetMapping(value = "/readyRecipe/")
-    public Pizza readyRecipe() {
+    public PizzaDto readyRecipe() {
         return kithenService.getPizza();
     }
 }

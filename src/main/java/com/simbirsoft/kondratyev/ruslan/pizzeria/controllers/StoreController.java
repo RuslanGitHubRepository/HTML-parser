@@ -43,9 +43,7 @@ public class StoreController {
 
     @GetMapping
     public List<IngredientDto> getAllIngredients() {
-        List<IngredientDto> collection = new ArrayList<>();
-        collection.addAll(storeService.getAllIngredients());
-        return collection;
+        return  storeService.getAllIngredients();
     }
 
     @PutMapping

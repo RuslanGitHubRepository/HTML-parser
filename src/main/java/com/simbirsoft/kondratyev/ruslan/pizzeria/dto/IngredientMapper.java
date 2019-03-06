@@ -8,6 +8,6 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface IngredientMapper {
-    //IngredientMapper INSTANCE = Mappers.getMapper( IngredientMapper.class );
     IngredientDto IngredientToIngredientDto(Ingredient ingredient);
+    Ingredient IngredientDtoToIngredient(IngredientDto ingredientDto);
 }

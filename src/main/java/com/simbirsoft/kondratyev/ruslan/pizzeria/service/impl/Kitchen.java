@@ -1,9 +1,11 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.service.impl;
 
 
+import com.simbirsoft.kondratyev.ruslan.pizzeria.dto.IngredientDto;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.dto.IngredientMapper;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.dto.PizzaDto;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.repository.KitchenRepository;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pizza;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Recipe;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Recipes;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
@@ -17,10 +19,12 @@ import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.*;
 import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.WRONG_FORMATION;
 
 @Transactional
-public class Kitchen implements Kitchens<Ingredient> {
+public class Kitchen implements Kitchens<IngredientDto> {
 
     @Autowired
     private KitchenRepository kitchenRepository;
+    @Autowired
+    private IngredientMapper ingredientMapper;
 
     private Integer sizePizza = 0;
     public static Long typeOfPizza = 0L;
@@ -35,7 +39,7 @@ public class Kitchen implements Kitchens<Ingredient> {
         typeOfPizza = 1L;
     }
 
-    public Wrongs addToRecipe(Ingredient ingredient, Integer countToAdd) {
+    public Wrongs addToRecipe(IngredientDto ingredientDto, Integer countToAdd) {
 
         if (countToAdd > maxPortionIngredient){
             return WRONG_INPUT;
@@ -49,7 +53,7 @@ public class Kitchen implements Kitchens<Ingredient> {
         Recipe recipe = new Recipe();
         recipe.setCountIngredient(countToAdd);
         recipe.setRecipeNumber(new Recipes(Kitchen.typeOfPizza, "recipe #" + Kitchen.typeOfPizza));
-        recipe.setIngredients(ingredient);
+        recipe.setIngredients(ingredientMapper.IngredientDtoToIngredient(ingredientDto));
 
         kitchenRepository.save(recipe);
 
@@ -60,9 +64,9 @@ public class Kitchen implements Kitchens<Ingredient> {
         return WRONG_NONE;
     }
 
-    public Pizza getPizza() {
+    public PizzaDto getPizza() {
 
-        Pizza pizza = new Pizza();
+        PizzaDto pizza = new PizzaDto();
         pizza.setSizePizza(sizePizza);
         List<Recipe> recipes = kitchenRepository.findByRecipeNumber_IdEquals(typeOfPizza);
         for(Recipe recipe: recipes){
