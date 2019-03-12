@@ -26,7 +26,7 @@ public class StoreControllerTest {
     List<String> ingredientName = new ArrayList<>();
     List<Pair<String,Integer>> commitIngredient;
     @Before
-    public void initSingers() {
+    public void initIngredients() {
 
         commitIngredient.addAll(ImmutableList.of(new Pair<>("Сыр",0),new Pair<>("Лук",0),new Pair<>("Грибы",0),new Pair<>("Оливки",0)));
     }

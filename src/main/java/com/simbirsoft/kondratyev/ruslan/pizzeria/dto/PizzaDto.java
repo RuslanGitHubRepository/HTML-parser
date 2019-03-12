@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 @Setter
+@Getter
 public class PizzaDto implements Serializable {
     private List<Pair<Integer, Ingredient>> ingredients = new ArrayList<>();
     private Integer sizePizza = 0;
