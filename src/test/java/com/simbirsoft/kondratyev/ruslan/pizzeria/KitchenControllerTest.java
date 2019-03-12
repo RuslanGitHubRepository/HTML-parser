@@ -48,7 +48,8 @@ public class KitchenControllerTest {
             HttpStatus httpStatus = kithenController.addToRecipe(countToAdd,ingredientDto);
             //THEN
             assertTrue(httpStatus == HttpStatus.OK);
-            kitchenRepository.delete(recipe);
+            List<Recipe> recipeList = kitchenRepository.findByRecipeNumber_IdEquals(typeOfPizza);
+            kitchenRepository.deleteAll(recipeList);
         }
     }
     @Test
@@ -57,6 +58,5 @@ public class KitchenControllerTest {
         PizzaDto pizzaDto = kithenController.readyRecipe();
         //THEN
         assertTrue(pizzaDto.getIngredients().size() > 0);
-        assertTrue(pizzaDto.getSizePizza() > 0);
     }
 }

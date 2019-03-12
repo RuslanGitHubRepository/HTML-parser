@@ -24,11 +24,10 @@ public class StoreControllerTest {
     @Autowired
     private StoreController storeController;
     List<String> ingredientName = new ArrayList<>();
-    List<Pair<String,Integer>> commitIngredient;
+    List<Pair<String,Integer>> commitIngredient = new ArrayList<>();
     @Before
     public void initIngredients() {
-
-        commitIngredient.addAll(ImmutableList.of(new Pair<>("Сыр",0),new Pair<>("Лук",0),new Pair<>("Грибы",0),new Pair<>("Оливки",0)));
+        commitIngredient.addAll(ImmutableList.of(new Pair<>("Сыр",0),new Pair<>("Лук",0),new Pair<>("Грибы",0),new Pair<>("Оливки",0),new Pair<>("Перец",0),new Pair<>("Кетчуп",0)));
     }
     @Test
     public void testGetIngredient(){
