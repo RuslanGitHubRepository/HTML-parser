@@ -40,9 +40,21 @@
         <aspectj.version>1.9.2</aspectj.version>
         <cglib.version>3.2.10</cglib.version>
         <mapstruct.version>1.3.0.Final</mapstruct.version>
+        <junit.version>4.12</junit.version>
+        <springtest.version>2.1.3.RELEASE</springtest.version>
+        <jmock.version>2.9.0</jmock.version>
     </properties>
 
     <dependencies>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>${springtest.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-jdk8</artifactId>

@@ -4,6 +4,7 @@ import com.simbirsoft.kondratyev.ruslan.pizzeria.dto.IngredientDto;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pair;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.service.Store;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.service.impl.StoreHouse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ import static com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs.WRON
 @RequestMapping("/private/store")
 public class StoreController {
     @Autowired
-    private StoreHouse storeService;
+    private Store<Ingredient> storeService;
 
     @GetMapping("/isFit/{ingredientName}")
     public HttpStatus getIngredient(@PathVariable String ingredientName, @RequestParam int quantity) {
