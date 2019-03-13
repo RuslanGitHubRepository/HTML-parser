@@ -1,2 +1,1 @@
-DROP TABLE IF EXISTS recipe;
 CREATE TABLE IF NOT EXISTS recipe (id BIGINT NOT NULL AUTO_INCREMENT, recipe_number_id BIGINT, count_ingredient INTEGER, ingredients_id BIGINT, PRIMARY KEY (id), FOREIGN KEY (ingredients_id) REFERENCES ingredients(id), FOREIGN KEY (recipe_number_id) REFERENCES recipes(id))

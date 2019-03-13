@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.testcontainers.shaded.com.google.common.collect.ImmutableList;
@@ -30,6 +31,7 @@ public class StoreControllerTest {
         commitIngredient.addAll(ImmutableList.of(new Pair<>("Сыр",0),new Pair<>("Лук",0),new Pair<>("Грибы",0),new Pair<>("Оливки",0),new Pair<>("Перец",0),new Pair<>("Кетчуп",0)));
     }
     @Test
+    @Profile("test")
     public void testGetIngredient(){
         //GIVEN
         ingredientName.addAll(ImmutableList.of("Сыр", "Лук", "Грибы", "Оливки","Перец","Кетчуп","Креветки","Курица","Ананас"));
@@ -41,6 +43,7 @@ public class StoreControllerTest {
         }
     }
     @Test
+    @Profile("test")
     public void testGetIngredientNotFound(){
         //GIVEN
         String name = "Чеснок";
@@ -61,6 +64,7 @@ public class StoreControllerTest {
         }
     }
     @Test
+    @Profile("test")
     public void testQuantityNotFound(){
         //GIVEN
         String name = "Чеснок";
@@ -70,6 +74,7 @@ public class StoreControllerTest {
         assertFalse(count != 0);
     }
     @Test
+    @Profile("test")
     public void testAllIngredient(){
         //WHEN
         List<IngredientDto>  dtoList = storeController.getAllIngredients();
@@ -77,6 +82,7 @@ public class StoreControllerTest {
         assertFalse(dtoList.size() == 0);
     }
     @Test
+    @Profile("test")
     public void testCommitStore(){
         //WHEN
         HttpStatus httpStatus = storeController.commitStore(commitIngredient);

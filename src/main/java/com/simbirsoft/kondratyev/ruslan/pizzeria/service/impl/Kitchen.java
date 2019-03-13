@@ -5,7 +5,6 @@ import com.simbirsoft.kondratyev.ruslan.pizzeria.dto.IngredientDto;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.dto.IngredientMapper;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.dto.PizzaDto;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.repository.KitchenRepository;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Recipe;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Recipes;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;

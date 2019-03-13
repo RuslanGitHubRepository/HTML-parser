@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2019-03-13-01
+      author: Kondratyev Ruslan
+      changes:
+        - sqlFile:
+            path: scripts/01_CREATE_TABLE_QUERY_INGREDIENTS.sql
+            relativeToChangelogFile: true
+  - changeSet:
+      id: 2019-03-13-02
+      author: Kondratyev Ruslan
+      changes:
+        - sqlFile:
+            path: scripts/02_CREATE_TABLE_QUERY_STORE.sql
+            relativeToChangelogFile: true
+  - changeSet:
+      id: 2019-03-13-03
+      author: Kondratyev Ruslan
+      changes:
+        - sqlFile:
+            path: scripts/03_CREATE_TABLE_QUERY_RECIPES.sql
+            relativeToChangelogFile: true
+  - changeSet:
+      id: 2019-03-13-04
+      author: Kondratyev Ruslan
+      changes:
+        - sqlFile:
+            path: scripts/04_CREATE_TABLE_QUERY_RECIPE.sql
+            relativeToChangelogFile: true
