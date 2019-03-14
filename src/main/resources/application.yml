@@ -1,9 +1,9 @@
 spring:
   # Spring JDBC configuration
   datasource:
-    url:      jdbc:mariadb://localhost:3305/mysql?serverTimezone=UTC
-    username: root
-    password: admin
+    url:      jdbc:mariadb://localhost:3306/pizzamaker?serverTimezone=UTC
+    username: ruslan
+    password: master
 
   # Spring Data JPA configuration
   jpa:

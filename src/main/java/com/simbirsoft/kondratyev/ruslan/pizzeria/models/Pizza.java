@@ -1,5 +1,6 @@
-package com.simbirsoft.kondratyev.ruslan.pizzeria.dto;
+package com.simbirsoft.kondratyev.ruslan.pizzeria.models;
 
+import com.simbirsoft.kondratyev.ruslan.pizzeria.dto.RecipeDto;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pair;
 import lombok.Getter;
@@ -15,20 +16,19 @@ import java.util.logging.Logger;
 
 @Setter
 @Getter
-public class PizzaDto implements Serializable {
-    private List<Pair<Integer, Ingredient>> ingredients = new ArrayList<>();
+public class Pizza implements Serializable {
+    private List<RecipeDto> ingredients = new ArrayList<>();
     private Integer sizePizza = 0;
-    private final String insertIngredient = "Pizza.insertIngredient ";
 
-    public void insertIngredient(Integer count, Ingredient ingredient){
-        ingredients.add(new Pair<>(count,ingredient));
+    public void insertIngredient(RecipeDto recipeDto){
+        ingredients.add(recipeDto);
     }
 
     @Override
     public String toString() {
         String pizzaDescription =  new String("Размер пиццы "+sizePizza+";\n");
-        for (Pair<Integer,Ingredient> pair:ingredients) {
-            pizzaDescription += pair.getSecond() + " -> " + pair.getFirst() + ";\n";
+        for (RecipeDto recipeDto:ingredients) {
+            //pizzaDescription += pair.getSecond() + " -> " + pair.getFirst() + ";\n";
         }
         return pizzaDescription;
     }

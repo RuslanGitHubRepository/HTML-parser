@@ -3,7 +3,8 @@ package com.simbirsoft.kondratyev.ruslan.pizzeria.service.impl;
 
 import com.simbirsoft.kondratyev.ruslan.pizzeria.dto.IngredientDto;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.dto.IngredientMapper;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.dto.PizzaDto;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.dto.RecipeMapper;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pizza;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.repository.KitchenRepository;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Recipe;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Recipes;
@@ -24,6 +25,8 @@ public class Kitchen implements Kitchens<IngredientDto> {
     private KitchenRepository kitchenRepository;
     @Autowired
     private IngredientMapper ingredientMapper;
+    @Autowired
+    private RecipeMapper recipeMapper;
 
     private Integer sizePizza = 0;
     public static Long typeOfPizza = 0L;
@@ -63,13 +66,13 @@ public class Kitchen implements Kitchens<IngredientDto> {
         return WRONG_NONE;
     }
 
-    public PizzaDto getPizza() {
+    public Pizza getPizza() {
 
-        PizzaDto pizza = new PizzaDto();
+        Pizza pizza = new Pizza();
         pizza.setSizePizza(sizePizza);
         List<Recipe> recipes = kitchenRepository.findByRecipeNumber_IdEquals(typeOfPizza);
         for(Recipe recipe: recipes){
-            pizza.insertIngredient(recipe.getCountIngredient(), recipe.getIngredients());
+            pizza.insertIngredient(recipeMapper.RecipeToRecipeDto(recipe));
         }
         readinessFlag = true;
         return pizza;

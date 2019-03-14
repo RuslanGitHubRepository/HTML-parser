@@ -1,8 +1,8 @@
 package com.simbirsoft.kondratyev.ruslan.pizzeria.controllers;
 
 import com.simbirsoft.kondratyev.ruslan.pizzeria.dto.IngredientDto;
-import com.simbirsoft.kondratyev.ruslan.pizzeria.dto.PizzaDto;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Ingredient;
+import com.simbirsoft.kondratyev.ruslan.pizzeria.models.Pizza;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.models.enums.Wrongs;
 import com.simbirsoft.kondratyev.ruslan.pizzeria.service.impl.Kitchen;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class KithenController {
     }
 
     @GetMapping(value = "/readyRecipe/")
-    public PizzaDto readyRecipe() {
+    public Pizza readyRecipe() {
         return kithenService.getPizza();
     }
 }

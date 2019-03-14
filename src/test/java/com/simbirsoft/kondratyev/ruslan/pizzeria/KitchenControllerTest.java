@@ -58,8 +58,8 @@ public class KitchenControllerTest {
     @Test
     public void testReadyRecipe(){
         //WHEN
-        PizzaDto pizzaDto = kithenController.readyRecipe();
+        Pizza pizza = kithenController.readyRecipe();
         //THEN
-        assertTrue(pizzaDto.getIngredients().size() >= 0);
+        assertTrue(pizza.getIngredients().size() >= 0);
     }
 }
