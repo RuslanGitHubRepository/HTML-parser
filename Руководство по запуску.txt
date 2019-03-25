@@ -1,0 +1,7 @@
+Запуск приложения осуществляется в коммандной строке по следующей комманде (OS Linux Debian):
+$ java -jar HTML-parser-1.0-SNAPSHOT-jar-with-dependencies.jar {URL1}, {URL2}, {URL3}, {URL4} ...
+например
+$ java -jar HTML-parser-1.0-SNAPSHOT-jar-with-dependencies.jar https://www.simbirsoft.com/ https://habr.com/ru/post/257223/
+
+В результате запуска программы будет напечатана необходимая статистика, которая также будет сохранена в базе данных. Для проверки используется база данных
+mariaDB, схема parser, с пользователем ruslan и пароль master. Пример работы программы приведен на слайде "ScreenShort работы программы.png" в корневой директории проекта.
